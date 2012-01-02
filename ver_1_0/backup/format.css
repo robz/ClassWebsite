@@ -1,0 +1,27 @@
+body { 
+	font:15px courier; 
+}
+#header {
+	background-color:#001A66;
+	text-align:top;
+}
+#headertext {
+	color:#FFFFFF;
+}
+#sidebar {
+	background-color:#B8B8A0;
+	width:130px;
+	text-align:top;
+}
+.sidelink {
+	text-decoration: none;
+	color:black;
+}
+#links :hover  {
+	text-decoration: none; 
+	color:white;
+}
+#bodytext {
+	background-color:#E6E6E6;
+	height:100%;
+}

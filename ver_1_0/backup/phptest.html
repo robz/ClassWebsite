@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            //var val = document.getElementById("words").getAttribute("value");
+ 
+            function mywrite(){
+				var agaxRequest;
+
+                if (window.XMLHttpRequest)
+                    agaxRequest = new XMLHttpRequest();
+                else
+                    agaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+
+                agaxRequest.open("POST","write.php",false);
+				agaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+                agaxRequest.send("text=hii!!&filename=data.txt");
+            }
+        </script>
+    </head>
+    <body>
+        <input type="button" id="but" value = "Write!" onclick="mywrite();" />
+    </body>
+	<div id="result"/>
+</html>

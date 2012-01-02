@@ -1,0 +1,38 @@
+<h3>Hello.</h3>I'm a third year Computer Science and Computer Engineering major at the University of Texas at Austin. I'm interested in everything to do with computers. I enjoy hanging out with people who ask existential questions. I like piano keys, rainy days, and comfortable dead ends.
+
+Speaking of dead ends, it looks as if you've found my webspace. I whipped this place up to get a quick feel for html, css, and javascript. Feel free to browse around. Let me know if there's something I can help you with.
+###
+<h3>Academics</h3>Here are the courses I'm currently taking:
+
+~
+
+Here are some interesting courses I've already taken:
+
+EE 306 Introduction to Computing
+CS 315 Algorithms and Data Structures
+EE 319K Introduction to Embedded Systems
+UGS Religion and Global Change
+EE 460N Computer Architecture
+CS 337 Theory of Programming Practice
+CS 345 Programming Languages
+M 427L Vector Calculus
+###
+<h3>Projects</h3>At some point I'll put up a list of interesting projects I've worked on. For now, a link to github will have to suffice.
+
+<a href="https://github.com/robz">https://github.com/robz</a>
+###
+<h3>Contact</h3>Feel free to email me: 
+
+rj[my last name] at gmail dot com
+
+Or send me a message:
+
+(as soon as I actually implement this feature)
+###
+This is a forum in the making. Challenge for you: try to break it.
+
+<form>Title:
+<input type="text" id="title"/>
+Message:
+<input type="text" id="message"/>
+<button type="button" onclick="postToForum()">post to forum</button>
