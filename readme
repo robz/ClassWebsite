@@ -1,0 +1,11 @@
+TODO:
+- center 
+- resize based on width
+
+Broswer test considerations:
+- haven't tested on linux
+- haven't tested opera, or ie 6, 7, or 8
+- ie 9 resizes incorrectly
+- ie 9 'selects' links and other elements
+- firefox windows 7 has strange fonts
+
