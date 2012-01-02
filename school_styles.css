@@ -30,6 +30,7 @@
 	width: 150px;
 	float: left;
 	margin: 8px 5px 5px 5px;
+	line-height: 30px;
 }
 #mainContent {
 	background-color:#E6E6E6;
@@ -42,14 +43,10 @@
 	font-size: 11px;
 	margin: 8px 5px 0px 5px;
 }
-.sidebarlink {
-	text-decoration: none;
-}
 #sidebar :hover {
 	background-color: #E6E6E6;
 }
 .sidebarlinkdiv {
-	margin: 5px 0px 10px 0px;
 	border-radius: 15px;
 }
 #contentHeading {
