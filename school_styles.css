@@ -1,0 +1,58 @@
+#title, #footer, a {
+	color: white;
+}
+#title, #sidebar, #mainContent, #footer {
+	padding: 10px 10px 10px 10px;
+	font-family:  courier, sans-serif;
+	border-radius: 10px;
+}
+#sidebar, #mainContent, a {
+	height: 400px;
+	color:black;
+}
+#title, #sidebar, #footer {
+	text-align: center;
+}
+#title, #footer {
+	background-color:#001A66;
+	min-width: 450px;
+	max-width: 750px;
+}
+#title {	
+	font-size: 30px;
+	letter-spacing:5px;
+	margin: 5px 5px 0px 5px;
+}
+#sidebar {
+	background-color:#B8B8A0;
+	color:black;
+	font-size: 18px;
+	width: 150px;
+	float: left;
+	margin: 8px 5px 5px 5px;
+}
+#mainContent {
+	background-color:#E6E6E6;
+	margin: 8px 5px 5px 185px;
+	font-size: 15px;
+	min-width: 270px;
+	max-width: 570px;
+}
+#footer {
+	font-size: 11px;
+	margin: 8px 5px 0px 5px;
+}
+.sidebarlink {
+	text-decoration: none;
+}
+#sidebar :hover {
+	background-color: #E6E6E6;
+}
+.sidebarlinkdiv {
+	margin: 5px 0px 10px 0px;
+	border-radius: 15px;
+}
+#contentHeading {
+	font-size: 28px;
+	font-weight: bold;
+}
