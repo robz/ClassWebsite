@@ -1,22 +1,28 @@
-#title, #footer, a {
-	color: white;
+#allcontent {
+	min-width: 450px;
+	max-width: 750px;
+	margin-left: auto;
+	margin-right: auto;
 }
 #title, #sidebar, #mainContent, #footer {
 	padding: 10px 10px 10px 10px;
-	font-family:  courier, sans-serif;
+	font-family:  "Courier New", Courier, monospace;
 	border-radius: 10px;
-}
-#sidebar, #mainContent, a {
-	height: 400px;
-	color:black;
 }
 #title, #sidebar, #footer {
 	text-align: center;
 }
+#sidebar, #mainContent, a {
+	color:black;
+}
+#title, #footer {
+	color: white;
+}
+#sidebar, #mainContent {
+	height: 500px;
+}
 #title, #footer {
 	background-color:#001A66;
-	min-width: 450px;
-	max-width: 750px;
 }
 #title {	
 	font-size: 30px;
@@ -36,8 +42,6 @@
 	background-color:#E6E6E6;
 	margin: 8px 5px 5px 185px;
 	font-size: 15px;
-	min-width: 270px;
-	max-width: 570px;
 }
 #footer {
 	font-size: 11px;
