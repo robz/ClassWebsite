@@ -6,7 +6,7 @@ function postFile(filename, isAsync, text) {
 	else
 		ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
 
-	ajaxRequest.open("POST","write.php",isAsync);
+	ajaxRequest.open("POST","external/write.php",isAsync);
 	ajaxRequest.setRequestHeader("Content-type", 
 		"application/x-www-form-urlencoded");
 	ajaxRequest.send("text="+text+"&filename="+filename+"&random="+getRandom());

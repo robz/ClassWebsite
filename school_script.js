@@ -14,10 +14,10 @@ function handleResize() {
 function manageCounter() {
 	var callback = function(contents) {
 		var counter = parseInt(contents)+1;
-		postFile("counter.txt", true, counter);
+		postFile("content/counter.txt", true, counter);
 		document.getElementById("hits").innerHTML = counter;
 	}
-	getFile("counter.txt", callback, true);
+	getFile("content/counter.txt", callback, true);
 }
 
 function setInitContent() {
