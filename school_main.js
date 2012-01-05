@@ -32,7 +32,7 @@ var starting = true;
 function setContent(index) {
 	var title = "error! ",
 		text = "this shouldn't be happening: "+index;
-	if (index >= 0 && index < 4) {
+	if (index >= 0 && index < 5) {
 		title = content_arr[index]["title"];
 		text = content_arr[index]["text"];
 		setCookie("robz-utcs-webpage-index",index);

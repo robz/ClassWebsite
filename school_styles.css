@@ -1,9 +1,4 @@
-#allcontent {
-	min-width: 450px;
-	max-width: 750px;
-	margin-left: auto;
-	margin-right: auto;
-}
+/* Groups of divs */
 #title, #sidebar, #mainContent, #footer {
 	padding: 10px 10px 10px 10px;
 	font-family:  "Courier New", Courier, monospace;
@@ -24,6 +19,14 @@
 #title, #footer {
 	background-color:#001A66;
 }
+
+/* Individual main divs */
+#allcontent {
+	min-width: 450px;
+	max-width: 750px;
+	margin-left: auto;
+	margin-right: auto;
+}
 #title {	
 	font-size: 30px;
 	letter-spacing:5px;
@@ -35,6 +38,7 @@
 	font-size: 18px;
 	width: 150px;
 	float: left;
+	padding: 15px 10px 10px 10px;
 	margin: 8px 5px 5px 5px;
 	line-height: 30px;
 }
@@ -47,7 +51,9 @@
 	font-size: 11px;
 	margin: 8px 5px 0px 5px;
 }
-#sidebar :hover {
+
+/* Other stuff */
+#sidelinks :hover {
 	background-color: #E6E6E6;
 }
 .sidebarlinkdiv {
