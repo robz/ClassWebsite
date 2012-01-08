@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<script type="text/javascript" src="ajax_functions.js"></script>
+</head>
+<body>
+	<h1>GDocsTest</h1>
+	<textarea rows=10 cols=40 id="gdocs_area" onkeyup="writeBack(this.value)">
+		hello?
+	</textarea>
+	<div id="godcs_status"></div>
+	<script type="text/javascript">
+		var textArea = document.getElementById("gdocs_area"),
+			statusDiv = document.getElementById("godcs_status");
+			
+		var myID = Math.floor(Math.random()*9999999);
+		
+		var callback = function(data) {
+			var jsonObj = JSON.parse(data);
+			textArea.value = decode(jsonObj.serverText);
+			statusDiv.innerHTML = "<p>"+data+"</p>"+statusDiv.innerHTML;		
+			setTimeout(requestFile, 100);
+		}
+		
+		function writeBack(text) {
+			postFile("data.txt",true,encode(text));
+			postFile("id.txt",true,""+myID);
+		}
+		
+		function requestFile() {
+			getFile("data.php?text="+encode(textArea.value)+"&id="+myID,
+				callback, true);
+		}
+		
+		function encode(text) {
+			return text.replace(/\n/g,"<br>").replace(/'/g,"<apost>").replace(/&/g,"<amp>");
+		}
+		
+		function decode(text) {
+			return text.replace(/<br>/g,"\n").replace(/<apost>/g,"'").replace(/<amp>/g,"&");
+		}
+		
+		requestFile();
+	</script>
+</body>
+</html>

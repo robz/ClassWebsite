@@ -1,16 +1,8 @@
 function startup() {
-	window.onresize = handleResize;
 	setInitContent();
 	manageCounter();
 }
 
-function handleResize() {
-	var size = getSize();
-	console.log(size.height+","+size.width);
-	console.log($("#mainContent"));
-}
-
-// everyone considered him the coward of the county
 function manageCounter() {
 	var callback = function(contents) {
 		var counter = parseInt(contents)+1;
@@ -31,8 +23,8 @@ function setInitContent() {
 var starting = true;
 function setContent(index) {
 	var title = "error! ",
-		text = "this shouldn't be happening: "+index;
-	if (index >= 0 && index < 5) {
+		text = "this shouldn't be happening: "+index+" of "+content_arr.length;
+	if (index >= 0 && index < content_arr.length) {
 		title = content_arr[index]["title"];
 		text = content_arr[index]["text"];
 		setCookie("robz-utcs-webpage-index",index);
