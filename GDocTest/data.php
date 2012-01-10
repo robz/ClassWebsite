@@ -7,11 +7,17 @@
 	
 	$serverID = file_get_contents($idfile);
 	$serverText = file_get_contents($filename);
-	while($serverID === $clientID || $serverText === $clientText) {
+	
+	$counter = 0;
+	while($counter < 50 || $serverID === $clientID || $serverText === $clientText) {
 		$serverID = file_get_contents($idfile);
 		$serverText = file_get_contents($filename);
 		usleep(100000);
+		$counter++;
 	}
 	
-	echo '{"ID":"'.$serverID.'","clientText":"'.$clientText.'","serverText":"'.$serverText.'"}';
+	$status = "ripe";
+	if ($counter == $timeout)
+		$status = "rotten";
+	echo '{"status":"'.$status.'","ID":"'.$serverID.'","clientText":"'.$clientText.'","serverText":"'.$serverText.'"}';
 ?>
