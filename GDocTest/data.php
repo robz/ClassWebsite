@@ -8,16 +8,21 @@
 	$serverID = file_get_contents($idfile);
 	$serverText = file_get_contents($filename);
 	
+	$pausetime = 100000;
+	$timeouttime = 30000000;
+	
+	$timeoutcount = $timeouttime/$pausetime;
 	$counter = 0;
-	while($counter < 50 || $serverID === $clientID || $serverText === $clientText) {
+	while($counter < $timeoutcount && 
+			($serverID === $clientID || $serverText === $clientText)) {
 		$serverID = file_get_contents($idfile);
 		$serverText = file_get_contents($filename);
-		usleep(100000);
+		usleep($pausetime);
 		$counter++;
 	}
 	
 	$status = "ripe";
-	if ($counter == $timeout)
+	if ($counter == $timeoutcount)
 		$status = "rotten";
 	echo '{"status":"'.$status.'","ID":"'.$serverID.'","clientText":"'.$clientText.'","serverText":"'.$serverText.'"}';
 ?>

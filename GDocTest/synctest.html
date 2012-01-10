@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<script type="text/javascript" src="ajax_functions.js"></script>
+	<script type="text/javascript" src="textAreaSelection.js"></script>
 </head>
 <body>
 	<h1>GDocs Test</h1>
@@ -16,8 +17,12 @@
 		
 		var callback = function(data) {
 			var jsonObj = JSON.parse(data);
-			textArea.value = decode(jsonObj.serverText);
-			statusDiv.innerHTML = "<p>"+data+"</p>"+statusDiv.innerHTML;		
+			if (jsonObj["status"] == "ripe") {
+				var sel = getInputSelection(textArea);
+				textArea.value = decode(jsonObj.serverText);
+				setInputSelection(textArea, sel.start, sel.end);
+			}
+			statusDiv.innerHTML = "<p>"+data+"</p>"+statusDiv.innerHTML;	
 			setTimeout(requestFile, 100);
 		}
 		
