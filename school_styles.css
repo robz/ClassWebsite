@@ -1,7 +1,15 @@
+/* Tags */
+canvas {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: -1;
+}
+
 /* Groups of divs */
 #title, #sidebar, #mainContent, #footer {
 	padding: 10px 10px 10px 10px;
-	font-family:  "Courier New", Courier, monospace;
+	font-family: "MS Sans Serif", Geneva, sans-serif;
 	border-radius: 10px;
 }
 #title, #sidebar, #footer {

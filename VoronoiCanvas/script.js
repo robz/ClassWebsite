@@ -16,8 +16,8 @@ function init() {
 function paintPallet(e) {
 	var canvas=document.getElementById("pallet");
 	var browserSize = getSize();
-	canvasSize.width = browserSize.width*2/3;
-	canvasSize.height = browserSize.height*2/3;
+	canvasSize.width = browserSize.width-20;
+	canvasSize.height = browserSize.height-20;
 	canvas.width = canvasSize.width;
 	canvas.height = canvasSize.height;
 	

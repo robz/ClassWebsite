@@ -1,10 +1,11 @@
 function startup() {
 	setInitContent();
 	manageCounter();
+	canvasInit();
 }
 
 function manageCounter() {
-	var callback = function(contents) {
+	var callback = function(contents) {	
 		var counter = parseInt(contents)+1;
 		postFile("content/counter.txt", true, counter);
 		document.getElementById("hits").innerHTML = counter;
