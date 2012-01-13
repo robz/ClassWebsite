@@ -3,13 +3,16 @@ var canvasSize = {width:initSize.width,height:initSize.height};
 var canvas;
 var circles;
 
+var drawTimeout = 40,
+	moveTimeout = 40;
+
 function canvasInit() {
 	makeCircles();
 	canvas = document.getElementById("pallet");
 	paintPallet();
 	window.onresize = paintPallet;
-	setInterval(moveCircles, 30);
-	setInterval(drawCircles, 40);
+	setTimeout(moveCircles, moveTimeout);
+	setTimeout(drawCircles, drawTimeout);
 }
 
 function makeCircles() {
@@ -57,6 +60,7 @@ function moveCircles() {
 	for(var i = 0; i < circles.length; i++) {
 		moveCircle(circles[i]);
 	}
+	setTimeout(moveCircles, moveTimeout);
 }
 
 function moveCircle(circle) {
@@ -113,6 +117,7 @@ function drawCircles() {
 		ctx.fillStyle = "#"+fillZeros(circles[i].c.toString(16));
 		ctx.fill();
 	}
+	setTimeout(drawCircles, drawTimeout);
 }
 
 function fillZeros(str) {
