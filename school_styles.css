@@ -11,6 +11,7 @@ canvas {
 	padding: 10px 10px 10px 10px;
 	font-family: "MS Sans Serif", Geneva, sans-serif;
 	border-radius: 10px;
+	opacity: 0.9;
 }
 #title, #sidebar, #footer {
 	text-align: center;
@@ -30,7 +31,7 @@ canvas {
 
 /* Individual main divs */
 #allcontent {
-	min-width: 450px;
+	min-width: 530px;
 	max-width: 750px;
 	margin-left: auto;
 	margin-right: auto;

@@ -11,20 +11,27 @@ var content_arr = [
 	free to browse around. Let me know if there's something I can help you with."},
 {	title:"Academics",
 	filename:"",
-	text:"Here are the courses I'm currently taking:<br/><br/>~<br/><br/>\
-	Here are some <em>interesting</em> courses I've already taken:<br/><br/>EE 306 Introduction to Computing<br/>CS 315 Algorithms and Data Structures<br/>EE 319K Introduction to Embedded Systems<br/>UGS Religion and Global Change<br/>EE 460N Computer Architecture<br/>CS 337 Theory of Programming Practice<br/>CS 345 Programming Languages<br/>M 427L Vector Calculus"},
+	text:"Here are the courses I'm currently taking:<br/><br/>\
+	EE 461L Software Engineering and Design<br/>\
+	CS 343 Artificial Intelligence<br/>\
+	CS 372 Into To Operating Systems<br/>\
+	WGS 301 Gay & Lesbian Literature & Culture<br/><br/>\
+	Here are some <em>interesting</em> courses I've already taken:<br/><br/>\
+	EE 306 Introduction to Computing<br/>EE 319K Introduction to Embedded Systems<br/>\
+	EE 460N Computer Architecture<br/>\
+	CS 315 Algorithms and Data Structures<br/>CS 337 Theory of Programming Practice<br/>\
+	CS 345 Programming Languages<br/>UGS Religion and Global Change<br/>\
+	M 427L Vector Calculus"},
 {	title:"Projects",
 	filename:"",
 	text:"It seems most of the stuff I've done recently has had to do with web development.\
-	For example:\
-	<ul>\
-	<li><a href=\"index.html\">a webpage with a bunch of bouncing circles in the background</a></li>\
-	<li><a href=\"GDocTest/synctest.html\">a google-docs-like realtime typing box</a></li>\
-	<li><a href=\"VoronoiCanvas/index.html\">an html5 attempt at making dynamic voronoi graphs</a></li>\
-	</ul><br/>\
-	But here's an umbrella for everything else, including this webpage:<br/><br/>\
+	For example:<br/><br/>\
+	<a href=\"index.html\"><img src=\"content/recursion.gif\"></a>\
+	<a href=\"GDocTest/synctest.html\"><img src=\"content/gdocs.gif\"></a>\
+	<a href=\"VoronoiCanvas/index.html\"><img src=\"content/voronoi.gif\"></a><br/><br/>\
+	And here's an umbrella for most everything else I've worked on recenty, even this webpage:<br/><br/>\
 	<a href=\"https://github.com/robz\">https://github.com/robz</a>"},
-{	title:"Favourites",
+{	title:"Favorites",
 	filename:"",
 	text:"Here's a list of some websites I think are really cool:\
 	<ul>\
