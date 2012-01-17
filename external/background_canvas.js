@@ -32,26 +32,25 @@ function makeCircles() {
 	}
 }
 
-var sideArr = [
-];
+var no_op = function() {return {isNoOp:true};};
 
 var boundsArr = [
-	null, //0000
-	function() {return {ddif:0, newy:0};}, // 0001
-	function() {return {ddif:Math.PI, newx:canvas.width};}, // 0010
-	function() {return {ddif:0, newx:canvas.width, newy:0};}, // 0011
-	function() {return {ddif:0, newy:canvas.height};}, // 0100
-	null, //0101
-	function() {return {ddif:0, newx:canvas.width, newy:canvas.height};}, //0110
-	null, //0111
-	function() {return {ddif:Math.PI, newx:0};}, //1000
-	function() {return {ddif:0, newx:0, newy:0};}, //1001
-	null, //1010
-	null, //1011
-	function() {return {ddif:0, newx:0, newy:canvas.height};}, //1100
-	null, //1101
-	null, //1110
-	null  //1111
+	, //0000
+	function(circle) {return {ddif:0, newy:circle.r};}, // 0001
+	function(circle) {return {ddif:Math.PI, newx:canvas.width-circle.r};}, // 0010
+	function(circle) {return {ddif:0, newx:canvas.width-circle.r, newy:circle.r};}, // 0011
+	function(circle) {return {ddif:0, newy:canvas.height-circle.r};}, // 0100
+	no_op, //0101
+	function(circle) {return {ddif:0, newx:canvas.width-circle.r, newy:canvas.height-circle.r};}, //0110
+	no_op, //0111
+	function(circle) {return {ddif:Math.PI, newx:circle.r};}, //1000
+	function(circle) {return {ddif:0, newx:circle.r, newy:circle.r};}, //1001
+	no_op, //1010
+	no_op, //1011
+	function(circle) {return {ddif:0, newx:circle.r, newy:canvas.height-circle.r};}, //1100
+	no_op, //1101
+	no_op, //1110
+	no_op  //1111
 ];
 
 function moveCircles() {
@@ -75,13 +74,15 @@ function moveCircle(circle) {
 		if (!boundFunct) {
 			alert("bounds error: "+linesCrossed.toString(2));
 		} else {
-			var bounds = boundFunct();
-			circle.d = (bounds.ddif-circle.d+2*Math.PI)%(2*Math.PI);
-			circle.c = (Math.floor(0x7F*Math.random())<<16)
-				+(Math.floor(0x7F*Math.random())<<8)
-				+(Math.floor(0x7F*Math.random()));
-			if (bounds.newx) circle.x = bounds.newx-circle.r;
-			if (bounds.newy) circle.y = bounds.newy-circle.r;
+			var bounds = boundFunct(circle);
+			if (!bounds.isNoOp) {
+				circle.d = (bounds.ddif-circle.d+2*Math.PI)%(2*Math.PI);
+				circle.c = (Math.floor(0x7F*Math.random())<<16)
+					+(Math.floor(0x7F*Math.random())<<8)
+					+(Math.floor(0x7F*Math.random()));
+				if (bounds.newx != null) circle.x = bounds.newx;
+				if (bounds.newy != null) circle.y = bounds.newy;
+			}
 		}
 	}
 }

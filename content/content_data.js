@@ -14,7 +14,7 @@ var content_arr = [
 	text:"Here are the courses I'm currently taking:<br/><br/>\
 	EE 461L Software Engineering and Design<br/>\
 	CS 343 Artificial Intelligence<br/>\
-	CS 372 Into To Operating Systems<br/>\
+	CS 372 Intro To Operating Systems<br/>\
 	WGS 301 Gay & Lesbian Literature & Culture<br/><br/>\
 	Here are some <em>interesting</em> courses I've already taken:<br/><br/>\
 	EE 306 Introduction to Computing<br/>EE 319K Introduction to Embedded Systems<br/>\
@@ -29,7 +29,7 @@ var content_arr = [
 	<a href=\"index.html\"><img src=\"content/recursion.gif\"></a>\
 	<a href=\"GDocTest/synctest.html\"><img src=\"content/gdocs.gif\"></a>\
 	<a href=\"VoronoiCanvas/index.html\"><img src=\"content/voronoi.gif\"></a><br/><br/>\
-	And here's an umbrella for most everything else I've worked on recenty, even this webpage:<br/><br/>\
+	And here's an umbrella for most everything else, even this webpage:<br/><br/>\
 	<a href=\"https://github.com/robz\">https://github.com/robz</a>"},
 {	title:"Favorites",
 	filename:"",
@@ -47,5 +47,21 @@ var content_arr = [
 	text:"Feel free to email me if you'd like a copy of my resume\
 	(if you're into that sort of thing) or you'd just like to get ahold of\
 	me for any reason.<br/><br/>\
-	<em>rj[my last name] at gmail dot com</em><br/><br/>"}
+	<em>rj[my last name] at gmail dot com</em><br/><br/>"},
+{	title:"Random",
+	filename:"",
+	text:"No one will ever manage to banish from my thoughts the notion that raw food with mayonnaise is \
+somehow deeply sexual. The hard vegetable insinuating its way into the unctuousness of the cream; \
+unlike many other preparations, here there is no chemistry causing each of the two foodstuffs to \
+sacrifice a part of its nature and espouse that of the other, thus becoming through osmosis, like \
+bread and butter, a new and wonderful substance. In this case, mayonnaise and vegetables remain \
+perennial, each identical to its own self but, as in the carnal act, hopelessly ecstatic at being \
+together. As for the meat, it nevertheless does obtain something more: its texture is elastic and \
+porous, it yields to the bite and fills with mayonnaise in such a way that what one is chewing on, \
+without false modesty, is something firm at heart that has been drizzled with a velvety moisture. \
+Add to this the delicacy of a smooth flavor, for there is nothing biting about mayonnaise, no hot \
+spiciness--like water, it surprises one's mouth with its affable neutrality; then come the \
+exquisite nuances of the spread of vegetables: insolent tang of radishes and cauliflower, watery \
+sweetness of the tomato, discreet acidity of broccoli, generosity of the carrot upon the tongue, \
+the crunchy licorice hints of celery... a treat fit for a king."} 
 ];

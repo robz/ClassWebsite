@@ -9,27 +9,37 @@
 	<script type="text/javascript" src="external/background_canvas.js"></script>
 	<script type="text/javascript" src="content/content_data.js"></script>
 	<script type="text/javascript" src="school_script.js"></script>
+	<script type="text/javascript">
+function logMouse(e) {
+	console.log("on");
+}
+function logMouse2(e) {
+	console.log("off");
+}
+	</script>
 </head>
-<body onload="startup()"> <div id="allcontent">
+<body onload="startup()"> 
 	<canvas id="pallet"></canvas>
-	<div id="title">the webspace of robby nevels</div>
-	<div id="sidebar">
-		<img src="content/me.jpg"/>
-		<div id = "sidelinks">
-			<div class="sidebarlinkdiv" onclick="setContent(0)">about</div>
-			<div class="sidebarlinkdiv" onclick="setContent(1)">academics</div>
-			<div class="sidebarlinkdiv" onclick="setContent(2)">projects</div>
-			<div class="sidebarlinkdiv" onclick="setContent(3)">favs</div>
-			<div class="sidebarlinkdiv" onclick="setContent(4)">contact</div>
+	<div id="allcontent">
+		<div id="title">the webspace of robby nevels</div>
+		<div id="sidebar">
+			<img src="content/me.jpg"/>
+			<div id = "sidelinks">
+				<div class="sidebarlinkdiv" onclick="setContent(0)">about</div>
+				<div class="sidebarlinkdiv" onclick="setContent(1)">academics</div>
+				<div class="sidebarlinkdiv" onclick="setContent(2)">projects</div>
+				<div class="sidebarlinkdiv" onclick="setContent(3)">favs</div>
+				<div class="sidebarlinkdiv" onclick="setContent(4)">contact</div>
+			</div>
 		</div>
-	</div>
-	<div id="mainContent">
-		<div id="contentHeading">subtitle</div>
-		<p id="contentText"></p>
-	</div>
-	<div id="footer">
-		this page (version 2.1) was made entirely by me!<br/>
-		<span id="hits">0</span> hits since launch jan 1, 2012
-	</div>
-</div> </body>
+		<div id="mainContent">
+			<div id="contentHeading">subtitle</div>
+			<p id="contentText"></p>
+		</div>
+		<div id="footer">
+			this page (version 2.1) was made entirely by me!<br/>
+			<span id="hits">0</span> hits since launch jan 1, 2012
+		</div>
+	</div> 
+</body>
 </html>
