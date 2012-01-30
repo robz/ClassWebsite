@@ -6,7 +6,7 @@ var content_arr = [
 	with computers. I enjoy hanging out with people who ask existential \
 	questions. I like piano keys, rainy days, and comfortable dead ends.\
 	<br/><br/>\
-	Speaking of dead ends, it looks as if you've found my webspace. I whipped \
+	Speaking of dead ends, it looks as if you've found my webspace! I whipped \
 	this place up to get a quick feel for html, css, javascript, and php. Feel \
 	free to browse around. Let me know if there's something I can help you with."},
 {	title:"Academics",
@@ -14,11 +14,11 @@ var content_arr = [
 	text:"Here are the courses I'm currently taking:<br/><br/>\
 	EE 461L Software Engineering and Design<br/>\
 	CS 343 Artificial Intelligence<br/>\
-	CS 372 Intro To Operating Systems<br/>\
+	CS 372H Intro To Operating Systems<br/>\
 	WGS 301 Gay & Lesbian Literature & Culture<br/><br/>\
 	Here are some <em>interesting</em> courses I've already taken:<br/><br/>\
-	EE 306 Introduction to Computing<br/>EE 319K Introduction to Embedded Systems<br/>\
-	EE 460N Computer Architecture<br/>\
+	EE 306 Introduction to Computing<br/>EE 312 Introduction to Programming<br/>\
+	EE 319K Introduction to Embedded Systems<br/>EE 460N Computer Architecture<br/>\
 	CS 315 Algorithms and Data Structures<br/>CS 337 Theory of Programming Practice<br/>\
 	CS 345 Programming Languages<br/>UGS Religion and Global Change<br/>\
 	M 427L Vector Calculus"},
@@ -45,10 +45,10 @@ var content_arr = [
 {	title:"Contact",
 	filename:"",
 	text:"Feel free to email me if you'd like a copy of my resume\
-	(if you're into that sort of thing) or you'd just like to get ahold of\
+	(if you're into that sort of thing) or if you'd just like to get ahold of\
 	me for any reason.<br/><br/>\
 	<em>rj[my last name] at gmail dot com</em><br/><br/>"},
-{	title:"Random",
+{	title:"Easter Egg",
 	filename:"",
 	text:"No one will ever manage to banish from my thoughts the notion that raw food with mayonnaise is \
 somehow deeply sexual. The hard vegetable insinuating its way into the unctuousness of the cream; \
