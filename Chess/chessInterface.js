@@ -1,0 +1,54 @@
+function startup() {
+	for(i = 0; i < 64; i++) {
+		document.getElementById("sq"+i).onclick = sqclicked;
+	}
+}
+
+function sqclicked(mouseEvent) {
+	pieceName = mouseEvent.srcElement.innerText; // empty squares are ""
+	pieceCoord = idToCoord(mouseEvent.srcElement.id)
+	console.log("["+pieceName+"] @ "+pieceCoord);
+	executeState({name:pieceName, coord:pieceCoord});
+}
+
+function move(start, end) {
+	var startElem = document.getElementById(coordToID(start)),
+		endElem = document.getElementById(coordToID(end));
+	endElem.innerText = startElem.innerText;
+	startElem.innerText = "";
+}
+
+// ex) (6,4) -> WP
+function getName(coord) {
+	return document.getElementById(coordToID(coord)).innerText;
+}
+
+// (row,col) -> sqXX
+function coordToID(coord) {
+	return "sq"+(coord[0]*8+coord[1]);
+}
+
+// sqXX -> (row,col)
+function idToCoord(id) {
+	var sqnum = parseInt(id.substring(2, id.length));
+	return [Math.floor(sqnum/8), sqnum%8];
+}
+
+function setDeselected(coord) {
+	var id = coordToID(coord);
+	var elem = document.getElementById(id);
+	var num = parseInt(elem.id.substring(2, elem.id.length));
+	elem.className = elem.className.replace( /(?:^|\s)selected(?!\S)/ , '' );
+	if ( Math.floor(num/8)%2 == 0 )
+		elem.className += " row1 ";
+	else 
+		elem.className += " row2 ";
+}
+
+function setSelected(coord) {
+	var id = coordToID(coord);
+	var elem = document.getElementById(id);
+	elem.className = elem.className.replace( /(?:^|\s)row1(?!\S)/ , '' );
+	elem.className = elem.className.replace( /(?:^|\s)row2(?!\S)/ , '' );
+	elem.className += " selected ";
+}

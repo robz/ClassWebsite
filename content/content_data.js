@@ -29,6 +29,7 @@ var content_arr = [
 	<a href=\"index.html\"><img src=\"content/recursion.gif\"></a>\
 	<a href=\"GDocTest/synctest.html\"><img src=\"content/gdocs.gif\"></a>\
 	<a href=\"VoronoiCanvas/index.html\"><img src=\"content/voronoi.gif\"></a><br/><br/>\
+    <a href=\"Chess/chess.html\"><img src=\"content/chess.gif\"></a><br/><br/>\
 	And here's an umbrella for most everything else, even this webpage:<br/><br/>\
 	<a href=\"https://github.com/robz\">https://github.com/robz</a>"},
 {	title:"Favorites",
