@@ -37,15 +37,7 @@ function executeMove(start, end) {
 }
 
 function executeAIMove() {
-	var moves = getAllMoves(false);
-	
-	if (moves.length == 0) {
-		console.log("out of moves!");
-		state = 0;
-		return;
-	}
-	
-	var move = moves[Math.floor(Math.random()*moves.length)];
+	var move = randomMove();
 	executeMove(move.start, move.end);
 	state = 0;
 }
