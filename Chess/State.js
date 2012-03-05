@@ -16,8 +16,6 @@ var piecescores = {
 }
 
 function StateObj(b, oldscore) {
-	
-	alert("hi...?");
 	if (!b && !oldscore) {
 		this.board = 
 		[["BR","BH","BB","BK","BQ","BB","BH","BR"],
