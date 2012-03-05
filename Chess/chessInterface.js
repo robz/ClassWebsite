@@ -9,8 +9,13 @@ function startup() {
 }
 
 function sqclicked(mouseEvent) {
-	pieceName = mouseEvent.srcElement.innerText; 
-	pieceCoord = idToCoord(mouseEvent.srcElement.id)
+	var source;	
+	
+	if (mouseEvent.target) source = mouseEvent.target;
+	else if (mouseEvent.srcElement) source = mouseEvent.srcElement;
+	
+	pieceName = source.innerHTML; 
+	pieceCoord = idToCoord(source.id);
 	console.log("["+pieceName+"] @ "+pieceCoord);
 	executeState({name:pieceName, coord:pieceCoord});
 }

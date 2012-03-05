@@ -16,6 +16,8 @@ var piecescores = {
 }
 
 function StateObj(b, oldscore) {
+	
+	alert("hi...?");
 	if (!b && !oldscore) {
 		this.board = 
 		[["BR","BH","BB","BK","BQ","BB","BH","BR"],
@@ -110,7 +112,7 @@ function StateObj(b, oldscore) {
 	this.render = function(){
 		for(var r = 0; r < this.board.length; r++) {
 			for(var c = 0; c < this.board[r].length; c++) {
-				document.getElementById(coordToID([r,c])).innerText = this.board[r][c];
+				document.getElementById(coordToID([r,c])).innerHTML = this.board[r][c];
 			}
 		}
 	}
