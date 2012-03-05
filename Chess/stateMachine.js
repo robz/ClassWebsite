@@ -4,6 +4,11 @@ var state = 0;
 var prevPiece = null;
 var nextMoves = null;
 
+function executeMove(side, start, end) {
+	stateObj.move(side, [start, end]);
+	stateObj.render();
+}
+
 function executeState(newPiece) {
 	[state0, state1][state](newPiece);
 }
@@ -12,13 +17,13 @@ function state0(newPiece) {
 	if (newPiece.name == "" || newPiece.name[0] == 'B') return;
 	setSelected(newPiece.coord);
 	prevPiece = newPiece;
-	nextMoves = getPieceMoves(newPiece);
+	nextMoves = getPieceMoves(stateObj, newPiece);
 	state = 1;
 }
 
 function state1(newPiece) {
 	if (contains(nextMoves, newPiece.coord)) {
-		executeMove(prevPiece.coord, newPiece.coord);
+		executeMove('W', prevPiece.coord, newPiece.coord);
 		setDeselected(prevPiece.coord);
 		prevPiece = null;
 		state = 2;
@@ -32,13 +37,9 @@ function state1(newPiece) {
 	}
 }
 
-function executeMove(start, end) {
-	move(start, end);
-}
-
 function executeAIMove() {
-	var move = randomMove();
-	executeMove(move.start, move.end);
+	var move = minimax_decision(stateObj, 2);
+	executeMove('B', move[0], move[1]);
 	state = 0;
 }
 

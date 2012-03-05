@@ -1,26 +1,18 @@
+var stateObj;
+
 function startup() {
 	for(i = 0; i < 64; i++) {
 		document.getElementById("sq"+i).onclick = sqclicked;
 	}
+	stateObj = new StateObj();
+	stateObj.render();
 }
 
 function sqclicked(mouseEvent) {
-	pieceName = mouseEvent.srcElement.innerText; // empty squares are ""
+	pieceName = mouseEvent.srcElement.innerText; 
 	pieceCoord = idToCoord(mouseEvent.srcElement.id)
 	console.log("["+pieceName+"] @ "+pieceCoord);
 	executeState({name:pieceName, coord:pieceCoord});
-}
-
-function move(start, end) {
-	var startElem = document.getElementById(coordToID(start)),
-		endElem = document.getElementById(coordToID(end));
-	endElem.innerText = startElem.innerText;
-	startElem.innerText = "";
-}
-
-// ex) (6,4) -> WP
-function getName(coord) {
-	return document.getElementById(coordToID(coord)).innerText;
 }
 
 // (row,col) -> sqXX

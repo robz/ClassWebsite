@@ -5,30 +5,31 @@
 	<script type="text/javascript" src="stateMachine.js"></script>
 	<script type="text/javascript" src="chessRules.js"></script>
 	<script type="text/javascript" src="chessInterface.js"></script>
+	<script type="text/javascript" src="State.js"></script>
 </head>
 <body onload="startup()"> 
 	<div id="allcontent">
 		<h1>Chess</h1>
 		<table border="1">
 			<tr>
-				<td height=40 width=40 id="sq0" class="row1">BR</td>
-				<td height=40 width=40 id="sq1" class="row1">BH</td>
-				<td height=40 width=40 id="sq2" class="row1">BB</td>
-				<td height=40 width=40 id="sq3" class="row1">BQ</td>
-				<td height=40 width=40 id="sq4" class="row1">BK</td>
-				<td height=40 width=40 id="sq5" class="row1">BB</td>
-				<td height=40 width=40 id="sq6" class="row1">BH</td>
-				<td height=40 width=40 id="sq7" class="row1">BR</td>
+				<td height=40 width=40 id="sq0" class="row1"></td>
+				<td height=40 width=40 id="sq1" class="row1"></td>
+				<td height=40 width=40 id="sq2" class="row1"></td>
+				<td height=40 width=40 id="sq3" class="row1"></td>
+				<td height=40 width=40 id="sq4" class="row1"></td>
+				<td height=40 width=40 id="sq5" class="row1"></td>
+				<td height=40 width=40 id="sq6" class="row1"></td>
+				<td height=40 width=40 id="sq7" class="row1"></td>
 			</tr>
 			<tr>
-				<td height=40 width=40 id="sq8" class="row2">BP</td>
-				<td height=40 width=40 id="sq9" class="row2">BP</td>
-				<td height=40 width=40 id="sq10" class="row2">BP</td>
-				<td height=40 width=40 id="sq11" class="row2">BP</td>
-				<td height=40 width=40 id="sq12" class="row2">BP</td>
-				<td height=40 width=40 id="sq13" class="row2">BP</td>
-				<td height=40 width=40 id="sq14" class="row2">BP</td>
-				<td height=40 width=40 id="sq15" class="row2">BP</td>
+				<td height=40 width=40 id="sq8" class="row2"></td>
+				<td height=40 width=40 id="sq9" class="row2"></td>
+				<td height=40 width=40 id="sq10" class="row2"</td>
+				<td height=40 width=40 id="sq11" class="row2"></td>
+				<td height=40 width=40 id="sq12" class="row2"></td>
+				<td height=40 width=40 id="sq13" class="row2"></td>
+				<td height=40 width=40 id="sq14" class="row2"></td>
+				<td height=40 width=40 id="sq15" class="row2"></td>
 			</tr>
 			<tr>
 				<td height=40 width=40 id="sq16" class="row1"></td>
@@ -71,24 +72,24 @@
 				<td height=40 width=40 id="sq47" class="row2"></td>
 			</tr>
 			<tr>
-				<td height=40 width=40 id="sq48" class="row1">WP</td>
-				<td height=40 width=40 id="sq49" class="row1">WP</td>
-				<td height=40 width=40 id="sq50" class="row1">WP</td>
-				<td height=40 width=40 id="sq51" class="row1">WP</td>
-				<td height=40 width=40 id="sq52" class="row1">WP</td>
-				<td height=40 width=40 id="sq53" class="row1">WP</td>
-				<td height=40 width=40 id="sq54" class="row1">WP</td>
-				<td height=40 width=40 id="sq55" class="row1">WP</td>
+				<td height=40 width=40 id="sq48" class="row1"></td>
+				<td height=40 width=40 id="sq49" class="row1"></td>
+				<td height=40 width=40 id="sq50" class="row1"></td>
+				<td height=40 width=40 id="sq51" class="row1"></td>
+				<td height=40 width=40 id="sq52" class="row1"></td>
+				<td height=40 width=40 id="sq53" class="row1"></td>
+				<td height=40 width=40 id="sq54" class="row1"></td>
+				<td height=40 width=40 id="sq55" class="row1"></td>
 			</tr>
 			<tr>
-				<td height=40 width=40 id="sq56" class="row2">WR</td>
-				<td height=40 width=40 id="sq57" class="row2">WH</td>
-				<td height=40 width=40 id="sq58" class="row2">WB</td>
-				<td height=40 width=40 id="sq59" class="row2">WQ</td>
-				<td height=40 width=40 id="sq60" class="row2">WK</td>
-				<td height=40 width=40 id="sq61" class="row2">WB</td>
-				<td height=40 width=40 id="sq62" class="row2">WH</td>
-				<td height=40 width=40 id="sq63" class="row2">WR</td>
+				<td height=40 width=40 id="sq56" class="row2"></td>
+				<td height=40 width=40 id="sq57" class="row2"></td>
+				<td height=40 width=40 id="sq58" class="row2"></td>
+				<td height=40 width=40 id="sq59" class="row2"></td>
+				<td height=40 width=40 id="sq60" class="row2"></td>
+				<td height=40 width=40 id="sq61" class="row2"></td>
+				<td height=40 width=40 id="sq62" class="row2"></td>
+				<td height=40 width=40 id="sq63" class="row2"></td>
 			</tr>
 		</table>
 	</div> 

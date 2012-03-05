@@ -17,13 +17,16 @@ var validMovements = {
 
 // color = false :: black
 // returns [{name:"XX",coord:(X,X)}, ...]
-function getPieces(color) {
+/*
+state.getName([row,col])
+*/
+function getPieces(state, color) {
 	var pre = (color) ? 'W' : 'B';
 
 	var pieces = [];
 	for(var r = 0; r < 8; r++) {
 		for(var c = 0; c < 8; c++) {
-			var str = getName([r,c]);
+			var str = state.getName([r,c]);
 			if (str[0] == pre)
 				pieces.push({name:str,coord:[r,c]});
 		}
@@ -34,23 +37,31 @@ function getPieces(color) {
 // color = false :: black
 // returns [move, move, ..., move]
 //	where move = {name:"XX", coord:(r,c)}
-function getAllMoves(color) {
+/* Dependencies:
+getPieces(state, color)
+getPieceMoves(state, piece)
+*/
+function getAllMoves(state, color) {
 	// return for each move in state all moves
-	var pieces = getPieces(color);
+	var pieces = getPieces(state, color);
 	var moves = []
 	for(var i = 0; i < pieces.length; i++) {
 		var pieceName = pieces[i].name;
 		var pieceStart = pieces[i].coord;
-		var pieceNextMoves = getPieceMoves(pieces[i]);
-		for(var j = 0; j < pieceNextMoves.length; j++) 
-			moves.push({name:pieceName, start:pieceStart, end:pieceNextMoves[j]});
+		var pieceNextMoves = getPieceMoves(state, pieces[i]);
+		for(var j = 0; j < pieceNextMoves.length; j++) {
+			moves.push([pieceStart, pieceNextMoves[j]]);
+		}
 	}
 	return moves;
 }
 
 // expects {name:"XX", coord:[X,X]}
 // returns [(r,c),(r,c),...,(r,c)]
-function getPieceMoves(piece) {
+/* Dependencies:
+validMove(state, piece, start, end, prevend)
+*/
+function getPieceMoves(state, piece) {
 	var name = piece.name, start = piece.coord;
 	if (name[1] !== "P")
 		name = name.substring(1,2);
@@ -66,7 +77,7 @@ function getPieceMoves(piece) {
 			moved = false;
 			var dif = difs[i];
 			var tmpCoord = [start[0]+dif[0]*scale, start[1]+dif[1]*scale];
-			if (validMove(piece, start, tmpCoord, prevTmp)) {
+			if (validMove(state, piece, start, tmpCoord, prevTmp)) {
 				moves.push(tmpCoord);
 				moved = true;
 			}
@@ -78,12 +89,15 @@ function getPieceMoves(piece) {
 	return moves;
 }
 
-function validMove(piece, start, end, prevend) {
+/* Dependencies:
+state.getName([row, col])
+*/
+function validMove(state, piece, start, end, prevend) {
 	// check bounds
 	if (end[0] < 0 || end[1] < 0 || end[0] > 7 || end[1] > 7)
 		return false;
 	
-	endpiece = getName(end);
+	endpiece = state.getName(end);
 	dif = [end[0]-start[0],end[1]-start[1]];
 	
 	// can't capture own piece
@@ -95,11 +109,11 @@ function validMove(piece, start, end, prevend) {
 	if (prevend != null) {
 		// the piece previously tried a move in this direction, was it on 
 		//	anther piece? (using induction)
-		if (getName(prevend) != "")
+		if (state.getName(prevend) != "")
 			return false;
 	} else if (piece.name[1] == 'P') { // handle pawn's special case
 		if (dif[0] > 1 || dif[0] < -1) {
-			if (getName([start[0]+dif[0]/2, start[1]]) != "")
+			if (state.getName([start[0]+dif[0]/2, start[1]]) != "")
 				return false;
 		}
 	}
