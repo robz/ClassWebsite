@@ -18,14 +18,14 @@ var piecescores = {
 function StateObj(b, oldscore) {
 	if (!b && !oldscore) {
 		this.board = 
-		[["BR","BH","BB","BK","BQ","BB","BH","BR"],
+		[["BR","BH","BB","BQ","BK","BB","BH","BR"],
 		 ["BP","BP","BP","BP","BP","BP","BP","BP"],
 		 ["","","","","","","",""],
 		 ["","","","","","","",""],
 		 ["","","","","","","",""],
 		 ["","","","","","","",""],
 		 ["WP","WP","WP","WP","WP","WP","WP","WP"],
-		 ["WR","WH","WB","WK","WQ","WB","WH","WR"]];
+		 ["WR","WH","WB","WQ","WK","WB","WH","WR"]];
 		this.score = [0,0];
 	} else if (b && oldscore) {
 		this.board = b;
