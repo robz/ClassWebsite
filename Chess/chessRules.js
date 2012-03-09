@@ -12,7 +12,7 @@ var validMovements = {
 	"Q"	: {isBounded:false,
 			difs:[[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]]},
 	"K"	: {isBounded:true,
-			difs:[[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]]}
+			difs:[[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1],[0,-3],[0,2]]}
 };
 
 // color = false :: black
@@ -116,6 +116,19 @@ function validMove(state, piece, start, end, prevend) {
 			if (state.getName([start[0]+dif[0]/2, start[1]]) != "")
 				return false;
 		}
+	} else if (piece.name[1] == 'K') { // handle castling special case
+		if (dif[1] > 1) {
+			if (state.getName([start[0], start[1]+1]) != "" 
+			      || state.getName([start[0], start[1]+2]) != "") {
+				return false;
+			}
+		} else if (dif[1] < -1) {
+			if (state.getName([start[0], start[1]-1]) != "" 
+			      || state.getName([start[0], start[1]-2]) != ""
+			      || state.getName([start[0], start[1]-3]) != ""){
+				return false;
+			}
+		}
 	}
 	
 	// other:
@@ -135,9 +148,25 @@ function validMove(state, piece, start, end, prevend) {
 			return false;
 	}
 	
-	//	en passant?
 	// 	castling?
-	//	are you in check?
+	if (piece.name[1] == 'K' && Math.abs(dif[1]) > 1) {
+	  // only backrow (quick case)
+		if ((piece.name[0] == 'B' && start[0] != 0) ||
+		    (piece.name[0] == 'W' && start[0] != 7))  
+		    return false;
+		 
+	  console.log("castling: "+piece.name[0]+"; "+dif[1]+"; "+state.importantMoves.whiteKing+"; "+state.importantMoves.leftWhiteRook);
+		// relavent pieces shouldn't have moved
+		if ((piece.name[0] == 'B' && dif[1] < -1 && (state.importantMoves.blackKing || state.importantMoves.leftBlackRook))
+		  ||(piece.name[0] == 'B' && dif[1] > 1 && (state.importantMoves.blackKing || state.importantMoves.rightBlackRook))
+		  ||(piece.name[0] == 'W' && dif[1] < -1 && (state.importantMoves.whiteKing || state.importantMoves.leftWhiteRook))
+		  ||(piece.name[0] == 'W' && dif[1] > 1 && (state.importantMoves.whiteKing || state.importantMoves.rightWhiteRook))){
+				return false;
+	  }
+	}
+	
+	//	en passant?
+	//	are you in check? (also: can't castle out of check or thru check)
 	//	checkmate?
 	
 	return true;

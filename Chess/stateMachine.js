@@ -38,8 +38,9 @@ function state1(newPiece) {
 }
 
 function executeAIMove() {
+	var move = randomMove(stateObj);
 	//var move = minimax_decision(stateObj, 2);
-	var move = alphabeta_decision(stateObj, 2).action;
+	//var move = alphabeta_decision(stateObj, 2).action;
 	executeMove('B', move[0], move[1]);
 	state = 0;
 }

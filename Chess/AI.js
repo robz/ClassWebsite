@@ -1,7 +1,7 @@
 /*********** RANDOM!!! *************/
 
-function randomMove() {
-	var moves = getAllMoves(stateObj, false);
+function randomMove(state) {
+	var moves = getAllMoves(state, false);
 	if (moves.length == 0) {
 		console.log("out of moves!");
 		state = 0;

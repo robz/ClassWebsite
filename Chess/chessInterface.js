@@ -8,13 +8,18 @@ function startup() {
 	stateObj.render();
 }
 
+function imgclicked(mouseEvent) {
+  console.log("hi!");
+}
+
 function sqclicked(mouseEvent) {
 	var source;	
 	
 	if (mouseEvent.target) source = mouseEvent.target;
 	else if (mouseEvent.srcElement) source = mouseEvent.srcElement;
 	
-	pieceName = source.innerHTML; 
+	var pieceName = source.innerHTML;
+	
 	pieceCoord = idToCoord(source.id);
 	console.log("["+pieceName+"] @ "+pieceCoord);
 	executeState({name:pieceName, coord:pieceCoord});
