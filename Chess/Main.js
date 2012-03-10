@@ -6,14 +6,10 @@ var agent;
 
 function startup() {
 	utils = new Utils();
-	
 	gameState = new GameState();
 	gameState.render();
-	
 	stateMachine = new StateMachine();
-	
 	rules = new ChessRules();
-	
 	agent = new AI();
 	
 	setHandlers();

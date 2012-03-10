@@ -13,7 +13,7 @@ function ChessRules() {
 		"Q"	: {isBounded:false,
 				difs:[[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]]},
 		"K"	: {isBounded:true,
-				difs:[[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]]}
+				difs:[[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1],[0,2],[0,-2]]}
 	};
 	
 	this.getPieces = function(state, color) {
@@ -95,10 +95,10 @@ function ChessRules() {
 				if (state.boardAt([start[0]+dif[0]/2, start[1]]) != "")
 					return false;
 			}
-		} /*else if (piece.name[1] == 'K') { // handle castling special case
+		} else if (piece.name[1] == 'K') { // handle castling special case
 			if (dif[1] > 1) {
 				if (state.boardAt([start[0], start[1]+1]) != "" 
-					  || state.getName([start[0], start[1]+2]) != "") {
+					  || state.boardAt([start[0], start[1]+2]) != "") {
 					return false;
 				}
 			} else if (dif[1] < -1) {
@@ -109,7 +109,6 @@ function ChessRules() {
 				}
 			}
 		}
-		*/
 		
 		// other:
 		//	pawns can't go diagonally unless capturing something
@@ -129,23 +128,19 @@ function ChessRules() {
 		}
 		
 		// 	castling?
-		/*
 		if (piece.name[1] == 'K' && Math.abs(dif[1]) > 1) {
 		  // only backrow (quick case)
 			if ((piece.name[0] == 'B' && start[0] != 0) ||
 				(piece.name[0] == 'W' && start[0] != 7))  
 				return false;
 			 
-		  console.log("castling: "+piece.name[0]+"; "+dif[1]+"; "+state.importantMoves.whiteKing+"; "+state.importantMoves.leftWhiteRook);
-			// relavent pieces shouldn't have moved
-			if ((piece.name[0] == 'B' && dif[1] < -1 && (state.importantMoves.blackKing || state.importantMoves.leftBlackRook))
-			  ||(piece.name[0] == 'B' && dif[1] > 1 && (state.importantMoves.blackKing || state.importantMoves.rightBlackRook))
-			  ||(piece.name[0] == 'W' && dif[1] < -1 && (state.importantMoves.whiteKing || state.importantMoves.leftWhiteRook))
-			  ||(piece.name[0] == 'W' && dif[1] > 1 && (state.importantMoves.whiteKing || state.importantMoves.rightWhiteRook))){
+		  // relavent pieces shouldn't have moved
+			if ((piece.name[0] == 'B' && dif[1] < -1 && (state.moveHistory & BLC_MASK))
+			  ||(piece.name[0] == 'B' && dif[1] > 1 && (state.moveHistory & BRC_MASK))
+			  ||(piece.name[0] == 'W' && dif[1] < -1 && (state.moveHistory & WLC_MASK))
+			  ||(piece.name[0] == 'W' && dif[1] > 1 && (state.moveHistory & WRC_MASK)))
 					return false;
-		  }
 		}
-		*/
 		
 		//	en passant?
 		//	are you in check? (also: can't castle out of check or thru check)

@@ -44,21 +44,29 @@ function GameState(board, moveHistory, score) {
 	this.becomeSuccessor = function(color, action) {
 		var start = action[0], end = action[1];
 		var takenName = this.board[end[0]][end[1]];
-		var oldHistory = moveHistory;
+		var oldHistory = this.moveHistory;
 		var oldScore = {black:this.score.black, white:this.score.white};
+		
+		// TODO: define checkForCastling function 
+		var raction = utils.checkForCastling(this, action);
 		
 		this.move(start, end);
 		
-		return {move:action, taken:takenName, history:oldHistory, score:oldScore};
+		return {move:action, taken:takenName, history:oldHistory, score:oldScore, rook:raction};
 	}
 	
-	// expecting {move, taken, history}
+	// expecting {move, rook, taken, history}
 	this.revertToPredecessor = function(patch) {
 		var start = patch.move[0], end = patch.move[1];
 		this.board[start[0]][start[1]] = this.board[end[0]][end[1]];
 		this.board[end[0]][end[1]] = patch.taken;
 		this.moveHistory = patch.history;
 		this.score = {black:patch.score.black, white:patch.score.white};
+		if (patch.rook) {
+			var rstart = patch.rook[0], rend = patch.rook[1];
+			this.board[rstart[0]][rstart[1]] = this.board[rend[0]][rend[1]];
+			this.board[rend[0]][rend[1]] = "";
+		}
 	}
 	
 	// expecting [r,c],[r,c]
@@ -73,6 +81,40 @@ function GameState(board, moveHistory, score) {
 			else
 				console.log("ERROR: unexpected color in taken piece "+taken);
 		}
+		
+		var moved = this.board[start[0]][start[1]];
+		if (moved == "WK") {
+			if (end[1]-start[1] == 2) {
+				this.board[7][5] = this.board[7][7];
+				this.board[7][7] = "";
+			} else if (end[1]-start[1] == -2) {
+				this.board[7][3] = this.board[7][0];
+				this.board[7][0] = "";
+			}
+			this.moveHistory |= WK_M;
+		} else if (moved == "BK") {
+			if (end[1]-start[1] == 2) {
+				this.board[0][5] = this.board[0][7];
+				this.board[0][7] = "";
+			} else if (end[1]-start[1] == -2) {
+				this.board[0][3] = this.board[0][0];
+				this.board[0][0] = "";
+			}
+			this.moveHistory |= BK_M;
+		} else if (moved == "BR") {
+			if (start[0] == 0 && start[1] == 0) {
+				this.moveHistory |= BRL_M;
+			} else if (start[0] == 0 && start[1] == 7) {
+				this.moveHistory |= BRR_M;
+			}
+		} else if (moved == "WR") {
+			if (start[0] == 7 && start[1] == 0) {
+				this.moveHistory |= WRL_M;
+			} else if (start[0] == 7 && start[1] == 7) {
+				this.moveHistory |= WRR_M;
+			}
+		}
+		
 		this.board[end[0]][end[1]] = this.board[start[0]][start[1]];
 		this.board[start[0]][start[1]] = "";
 	}

@@ -1,3 +1,6 @@
+var WK_M = 1, WRL_M = 2, WRR_M = 4, BK_M = 8, BRL_M = 0x10, BRR_M = 0x20;
+var BLC_MASK = 0x18, BRC_MASK = 0x28, WLC_MASK = 0x3, WRC_MASK = 0x5;
+
 function Utils() 
 {
 	var textToImgNameMap = {
@@ -83,6 +86,38 @@ function Utils()
 	this.getElemSrcFileName = function(elem) {
 		var arr = elem.src.split("/");
 		return arr[arr.length-1];
+	}
+	
+	this.checkForCastling = function(state, action) {
+		var start = action[0], end = action[1];
+		var moved = state.board[action[0][0]][action[0][1]];
+		
+		if (moved == "WK") {
+			if (end[1]-start[1] == 2) {
+				return [[7,7],[7,5]];
+			} else if (end[1]-start[1] == -2) {
+				return [[7,0],[7,3]];
+			}
+		} else if (moved == "BK") {
+			if (end[1]-start[1] == 2) {
+				return [[0,7],[0,5]];
+			} else if (end[1]-start[1] == -2) {
+				return [[0,0],[0,3]];
+			}
+		}
+	}
+	
+	// WK_M = 1, WRL_M = 2, WRR_M = 4, BK_M = 8, BRL_M = 0x10, BRR_M = 0x20
+	this.displayMoveFlags = function(prefix, state) {
+		var flags = state.moveHistory;
+		var str = "history flags :: ";
+		if (flags & WK_M) str += "white king | ";
+		if (flags & WRL_M) str += "white left rook | ";
+		if (flags & WRR_M) str += "white right rook | ";
+		if (flags & BK_M) str += "black king | ";
+		if (flags & BRL_M) str += "black left rook | ";
+		if (flags & BRR_M) str += "black right rook | ";
+		console.log(prefix + " -- " +str);
 	}
 	
 	this.setDeselected = function(coord) {
