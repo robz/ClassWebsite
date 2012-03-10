@@ -21,7 +21,7 @@ function StateMachine() {
 				this.state = 2;
 				
 				//var move = agent.randomMove(gameState);
-				var move = agent.alphabeta_decision(gameState, 3).action;
+				var move = agent.alphabeta_decision(gameState, 2).action;
 				gameState.move(move[0], move[1]);
 				gameState.render();
 				this.state = 0;

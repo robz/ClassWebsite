@@ -61,8 +61,10 @@ function Utils()
 	}
 	
 	this.setImage = function(id, url, name) {
-		document.getElementById(id).innerHTML = 
-			"<img src=\""+url+"\" id=\""+name+"\"/>";
+		var html = "<img src=\""+url+"\" id=\""+name+"\">";
+		if (document.getElementById(id).innerHTML != html) {
+			document.getElementById(id).innerHTML = html;
+		}
 	}
 	
 	this.clear = function(id) {
