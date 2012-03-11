@@ -80,7 +80,8 @@ function Utils()
 	}
 	
 	this.getEventElement = function(event) {
-		return event.srcElement;
+		if (event.target) return event.target;
+		else if (event.srcElement) return event.srcElement;
 	}
 	
 	this.getElemSrcFileName = function(elem) {
