@@ -24,7 +24,7 @@ function setHandlers() {
 
 function handleClick(event) {
 	var elem = utils.getEventElement(event);
-	var typeName = elem.constructor.name;
+	var typeName = utils.getTypeName(elem);
 	var c, n;
 		
 	if (typeName == "HTMLImageElement") {

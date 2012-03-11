@@ -80,8 +80,21 @@ function Utils()
 	}
 	
 	this.getEventElement = function(event) {
-		if (event.target) return event.target;
-		else if (event.srcElement) return event.srcElement;
+	  var elem = null;
+		if (event.target) 
+		  elem = event.target;
+		else if (event.srcElement) 
+		  elem = event.srcElement;
+		return elem;
+	}
+	
+	this.getTypeName = function(elem) {
+	  var name = elem.constructor.name;
+	  if (!name) {
+	    var partial = XPCNativeWrapper.unwrap(elem).toString().split(' ')[1];
+	    name = partial.substring(0,partial.length-1);
+	  }
+	  return name;
 	}
 	
 	this.getElemSrcFileName = function(elem) {

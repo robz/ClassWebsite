@@ -18,14 +18,12 @@ function StateMachine() {
 				utils.setDeselected(prevCoord);
 				gameState.move(prevCoord, piece.coord);
 				gameState.render();
-				utils.displayMoveFlags("me", gameState);
 				this.state = 2;
 				
 				//var move = agent.randomMove(gameState);
 				var move = agent.alphabeta_decision(gameState, 2).action;
 				gameState.move(move[0], move[1]);
 				gameState.render();
-				utils.displayMoveFlags("hir", gameState);
 				this.state = 0;
 			}
 		} else if (this.state == 2) {
