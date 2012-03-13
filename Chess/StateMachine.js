@@ -5,7 +5,7 @@ function StateMachine() {
 	
 	this.handleInput = function(piece) {
 		if (this.state == 0) {
-			if (piece.name == "") return;
+			if (piece.name == "" || piece.name[0] == 'B') return;
 			utils.setSelected(piece.coord);
 			prevCoord = piece.coord;
 			prevPieceMoves = rules.getPieceMoves(gameState, piece);
@@ -27,6 +27,7 @@ function StateMachine() {
 				this.state = 0;
 			}
 		} else if (this.state == 2) {
+		  // agent is decided move
 		}
 	}
 }
