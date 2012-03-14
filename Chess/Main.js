@@ -42,7 +42,7 @@ function handleClick(event) {
 		console.log("ERROR: unexpected typeName \""+typeName+"\"!!!");
 	}
 	
-	console.log("["+n +"] @ "+c);
+	//console.log("["+n +"] @ "+c);
 	stateMachine.handleInput({name:n, coord:c});
 }
 

@@ -46,8 +46,6 @@ function GameState(board, moveHistory, score) {
 		var takenName = this.board[end[0]][end[1]];
 		var oldHistory = this.moveHistory;
 		var oldScore = {black:this.score.black, white:this.score.white};
-		
-		// TODO: define checkForCastling function 
 		var raction = utils.checkForCastling(this, action);
 		
 		this.move(start, end);

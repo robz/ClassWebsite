@@ -1,4 +1,6 @@
 function ChessRules() {
+	this.checkingCheck = true;
+
 	this.validMovements = {
 		"WP" : {isBounded:true, 
 				difs:[[-2,0],[-1,0],[-1,1],[-1,-1]]},
@@ -21,17 +23,19 @@ function ChessRules() {
 		for(var r = 0; r < 8; r++) {
 			for(var c = 0; c < 8; c++) {
 				var str = state.boardAt([r,c]);
-				if (str[0] == color)
-					pieces.push({name:str,coord:[r,c]});
+				if (str[0] == color) {
+					var piece = {name:str,coord:[r,c]};
+					pieces.push(piece);
+				}
 			}
 		}
 		return pieces;
 	}
 	
 	this.getAllMoves = function(state, color) {
-		// return for each move in state all moves
 		var pieces = this.getPieces(state, color);
-		var moves = []
+		var moves = [];
+		
 		for(var i = 0; i < pieces.length; i++) {
 			var pieceName = pieces[i].name;
 			var pieceStart = pieces[i].coord;
@@ -46,7 +50,9 @@ function ChessRules() {
 	this.getPieceMoves = function(state, piece) {
 		var name = piece.name, start = piece.coord;
 		if (name[1] !== "P")
-			name = name.substring(1,2);
+			name = name.substring(1,2); // chop off the color character for 
+										//	everything but pawns
+										
 		var difs = this.validMovements[name].difs,
 			bounded = this.validMovements[name].isBounded;
 			
@@ -60,7 +66,8 @@ function ChessRules() {
 				var dif = difs[i];
 				var tmpCoord = [start[0]+dif[0]*scale, start[1]+dif[1]*scale];
 				if (this.validMove(state, piece, start, tmpCoord, prevTmp)) {
-					moves.push(tmpCoord);
+					if (!this.putsInCheck(state, piece, start, tmpCoord))
+						moves.push(tmpCoord);
 					moved = true;
 				}
 				prevTmp = tmpCoord;
@@ -72,6 +79,7 @@ function ChessRules() {
 	}
 	
 	this.validMove = function(state, piece, start, end, prevend) {
+		//console.log("moving "+piece.name+" from "+start+" to "+end);
 		// check bounds
 		if (end[0] < 0 || end[1] < 0 || end[0] > 7 || end[1] > 7)
 			return false;
@@ -84,7 +92,7 @@ function ChessRules() {
 			return false;
 			
 		// can't jump enemy pieces 
-		// (above constaint disables jumping own pieces except pawn)
+		// (above constaint disables jumping own pieces due to previous calls to this function)
 		if (prevend != null) {
 			// the piece previously tried a move in this direction, was it on 
 			//	anther piece? (using induction)
@@ -127,7 +135,7 @@ function ChessRules() {
 				return false;
 		}
 		
-		// 	castling?
+		// 	castling (still need to think about check)
 		if (piece.name[1] == 'K' && Math.abs(dif[1]) > 1) {
 		  // only backrow (quick case)
 			if ((piece.name[0] == 'B' && start[0] != 0) ||
@@ -142,10 +150,101 @@ function ChessRules() {
 					return false;
 		}
 		
-		//	en passant?
-		//	are you in check? (also: can't castle out of check or thru check)
-		//	checkmate?
+		// en passant?
 		
 		return true;
+	}
+	
+	this.putsInCheck = function(state, piece, start, end) {
+		// 	check
+		if (this.checkingCheck) {
+			var patch = state.becomeSuccessor(piece.name[0], [start, end]);
+			var result = this.inCheck(state, piece.name[0])
+			state.revertToPredecessor(patch);
+			if (result) {
+				//console.log("... in cheque!");
+				return true;
+			} 
+		}
+		
+		return false;
+	}
+	
+	this.inCheck = function(state, color) {
+		this.checkingCheck = false;
+		var result = this.auxInCheck(state, color);
+		this.checkingCheck = true;
+		return result;
+	}
+	
+	this.auxInCheck = function(state, color) {
+		var kingpiece = null;
+		for(var r = 0; r < 8; r++) {
+			for(var c = 0; c < 8; c++) {
+				var str = state.boardAt([r,c]);
+				if (str[0] == color && str[1] == 'K') {
+					kingpiece = {name:str,coord:[r,c]};
+					break;
+				}
+			}
+			if(kingpiece) break;
+		}
+	
+		if (!kingpiece) {
+			console.log("ERROR: no king found!");
+			return false;
+		}
+		
+		// are knights attacking us?
+		var tmpKnight = {name:color+"H", coord:kingpiece.coord};
+		var knightMoves = this.getPieceMoves(state, tmpKnight);
+		for(var i = 0; i < knightMoves.length; i++) {
+			var end = knightMoves[i];
+			if (state.boardAt(end) != "" && state.boardAt(end)[0] != color
+				&& state.boardAt(end)[1] == 'H')
+				return true;
+		}
+		
+		// are bishops or queens attacking us?
+		var tmpBishop = {name:color+"B", coord:kingpiece.coord};
+		var bishopMoves = this.getPieceMoves(state, tmpBishop);
+		for(var i = 0; i < bishopMoves.length; i++) {
+			var end = bishopMoves[i];
+			if (state.boardAt(end) != "" && state.boardAt(end)[0] != color
+				&& (state.boardAt(end)[1] == 'B' || state.boardAt(end)[1] == 'Q'))
+				return true;
+		}
+		
+		// are rooks or queens attacking us?
+		var tmpRook = {name:color+"R", coord:kingpiece.coord};
+		var rookMoves = this.getPieceMoves(state, tmpRook);
+		for(var i = 0; i < rookMoves.length; i++) {
+			var end = rookMoves[i];
+			if (state.boardAt(end) != "" && state.boardAt(end)[0] != color
+				&& (state.boardAt(end)[1] == 'R' || state.boardAt(end)[1] == 'Q'))
+				return true;
+		}
+		
+		// are pawns attacking us?
+		var tmpPawn = {name:color+"P", coord:kingpiece.coord};
+		var pawnMoves = this.getPieceMoves(state, tmpPawn);
+		for(var i = 0; i < pawnMoves.length; i++) {
+			var end = pawnMoves[i];
+			if (state.boardAt(end) != "" && state.boardAt(end)[0] != color
+				&& (state.boardAt(end)[1] == 'P'))
+				return true;
+		}                                                 
+		
+		// is another king (somehow magically) attacking us?
+		var tmpKing = kingpiece;
+		var kingMoves = this.getPieceMoves(state, tmpKing);
+		for(var i = 0; i < kingMoves.length; i++) {
+			var end = kingMoves[i];
+			if (state.boardAt(end) != "" && state.boardAt(end)[0] != color
+				&& (state.boardAt(end)[1] == 'K'))
+				return true;
+		}
+		
+		return false;
 	}
 }

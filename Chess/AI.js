@@ -17,7 +17,7 @@ function AI() {
 		this.expanded = 0;
 		this.visited = 0;
 		var result = this.alphabeta_max_value(state, depth, -Infinity, Infinity);
-		console.log("alphabeta:: depth "+depth+"; "+this.expanded+" states expanded ; "+this.visited+" states evaluated");
+		//console.log("alphabeta:: depth "+depth+"; "+this.expanded+" states expanded ; "+this.visited+" states evaluated");
 		return {action:result.action, exp:expanded, eva:visited};
 	}
 	
@@ -32,6 +32,11 @@ function AI() {
 		
 		var possibleActions = state.getLegalActions('B');
 		this.expanded++;
+		if (possibleActions.length == 0) {
+			// lose
+			return {action:null, value:-1000};
+		}
+		
 		for(var i = 0; i < possibleActions.length; i++) {
 			var nextAction = possibleActions[i];
 			
@@ -64,6 +69,12 @@ function AI() {
 		
 		var possibleActions = state.getLegalActions('W');
 		this.expanded++;
+		
+		if (possibleActions.length == 0) {
+			// win
+			return 1000;
+		}
+		
 		for(var i = 0; i < possibleActions.length; i++) {
 			var nextAction = possibleActions[i];
 			
