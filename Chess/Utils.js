@@ -183,12 +183,6 @@ function Utils()
 		var id = this.coordToId(coord);
 		var elem = document.getElementById(id);
 		var num = parseInt(elem.id.substring(2, elem.id.length));
-		/*
-		elem.className = elem.className.replace( /(?:^|\s)selected(?!\S)/ , '' );
-		if ( Math.floor(num/8)%2 == 0 )
-			elem.className += " row1 ";
-		else 
-			elem.className += " row2 ";*/
 		if ( Math.floor(num/8)%2 == 0 )
 			elem.className = " row1 ";
 		else 
@@ -198,9 +192,6 @@ function Utils()
 	this.setSelected = function(coord) {
 		var id = this.coordToId(coord);
 		var elem = document.getElementById(id);
-		//elem.className = elem.className.replace( /(?:^|\s)row1(?!\S)/ , '' );
-		//elem.className = elem.className.replace( /(?:^|\s)row2(?!\S)/ , '' );
-		//elem.className += " selected ";
 		elem.className = " selected ";
 	}
 	
