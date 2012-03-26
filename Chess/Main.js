@@ -8,11 +8,29 @@ function startup() {
 	utils = new Utils();
 	gameState = new GameState();
 	gameState.render();
+	
 	stateMachine = new StateMachine();
 	rules = new ChessRules();
 	agent = new AI();
 	
 	setHandlers();
+	setHoverAction();
+}
+
+function setHoverAction() {
+	for(var i = 0; i < 64; i++) {
+		var id = "sq"+i;
+		document.getElementById(id).onmouseover = handleHoverOn;
+		document.getElementById(id).onmouseout = handleHoverOff;
+	}
+}
+
+function handleHoverOn(event) {
+	utils.setHoveredOn(utils.getSquareData(event).coord);
+}
+
+function handleHoverOff(event) {
+	utils.setHoveredOff(utils.getSquareData(event).coord);
 }
 
 function setHandlers() {
@@ -23,27 +41,7 @@ function setHandlers() {
 }
 
 function handleClick(event) {
-	var elem = utils.getEventElement(event);
-	var typeName = utils.getTypeName(elem);
-	var c, n;
-		
-	if (typeName == "HTMLImageElement") {
-		c = utils.imgIDToCoord(elem.id);
-		n = utils.imgNameToText(utils.getElemSrcFileName(elem));
-	} else if (typeName == "HTMLTableCellElement") {
-		c = utils.idToCoord(elem.id);
-		if(elem.childNodes[0]) {
-			n = utils.imgNameToText(utils.getElemSrcFileName(
-				elem.childNodes[0]));
-		} else {
-			n = "";
-		}
-	} else {
-		console.log("ERROR: unexpected typeName \""+typeName+"\"!!!");
-	}
-	
-	//console.log("["+n +"] @ "+c);
-	stateMachine.handleInput({name:n, coord:c});
+	stateMachine.handleInput(utils.getSquareData(event));
 }
 
 

@@ -134,23 +134,74 @@ function Utils()
 		console.log(prefix + " -- " +str);
 	}
 	
+	this.getSquareData = function(event) {
+	  var elem = this.getEventElement(event);
+	  var typeName = this.getTypeName(elem);
+	  var c, n;
+		
+	  if (typeName == "HTMLImageElement") {
+		  c = this.imgIDToCoord(elem.id);
+		  n = this.imgNameToText(utils.getElemSrcFileName(elem));
+	  } else if (typeName == "HTMLTableCellElement") {
+		  c = this.idToCoord(elem.id);
+		  if(elem.childNodes[0]) {
+			  n = this.imgNameToText(utils.getElemSrcFileName(
+				  elem.childNodes[0]));
+		  } else {
+			  n = "";
+		  }
+	  } else {
+		  console.log("ERROR: unexpected typeName \""+typeName+"\"!!!");
+	  }
+	  
+	  return {name:n, coord:c};
+	}
+	
+	this.setHoveredOn = function(coord) {
+	  console.log("hovering on @ "+coord+" (vs "+stateMachine.prevCoord+")");
+		var id = this.coordToId(coord);
+		var elem = document.getElementById(id);
+		
+	  if ( stateMachine.prevCoord &&
+	    ( coord[0] == stateMachine.prevCoord[0] && coord[1] == stateMachine.prevCoord[1] ))
+	    return;
+	    
+		elem.className = " hovered ";
+	}
+	
+	this.setHoveredOff = function(coord) {
+	  console.log("hovering off @ "+coord+" (vs "+stateMachine.prevCoord+")");
+	  
+	  if ( stateMachine.prevCoord &&
+	    ( coord[0] == stateMachine.prevCoord[0] && coord[1] == stateMachine.prevCoord[1] ))
+	    return;
+	    
+    this.setDeselected(coord);
+	}
+	
 	this.setDeselected = function(coord) {
 		var id = this.coordToId(coord);
 		var elem = document.getElementById(id);
 		var num = parseInt(elem.id.substring(2, elem.id.length));
+		/*
 		elem.className = elem.className.replace( /(?:^|\s)selected(?!\S)/ , '' );
 		if ( Math.floor(num/8)%2 == 0 )
 			elem.className += " row1 ";
 		else 
-			elem.className += " row2 ";
+			elem.className += " row2 ";*/
+		if ( Math.floor(num/8)%2 == 0 )
+			elem.className = " row1 ";
+		else 
+			elem.className = " row2 ";	
 	}
 	
 	this.setSelected = function(coord) {
 		var id = this.coordToId(coord);
 		var elem = document.getElementById(id);
-		elem.className = elem.className.replace( /(?:^|\s)row1(?!\S)/ , '' );
-		elem.className = elem.className.replace( /(?:^|\s)row2(?!\S)/ , '' );
-		elem.className += " selected ";
+		//elem.className = elem.className.replace( /(?:^|\s)row1(?!\S)/ , '' );
+		//elem.className = elem.className.replace( /(?:^|\s)row2(?!\S)/ , '' );
+		//elem.className += " selected ";
+		elem.className = " selected ";
 	}
 	
 	this.containsCoord = function(arr, obj) {

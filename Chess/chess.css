@@ -11,6 +11,7 @@ table {
 }
 
 .selected { background-color: #0FF; }
+.hovered { background-color: #9F9; }
 
 .row1:nth-child(2n) { background-color: #AAA; } 
 .row1:nth-child(2n+1) { background-color: #ffffff; } 
