@@ -29,12 +29,13 @@ var content_arr = [
 	<a href=\"index.html\"><img src=\"content/recursion.gif\"></a>\
 	<a href=\"GDocTest/synctest.html\"><img src=\"content/gdocs.gif\"></a>\
 	<a href=\"VoronoiCanvas/index.html\"><img src=\"content/voronoi.gif\"></a><br/><br/>\
-    <a href=\"Chess/chess.html\"><img src=\"content/chess.gif\"></a><br/><br/>\
+    <a href=\"Chess/chess.html\"><img src=\"content/chess.gif\"></a>\
+    <a href=\"RobotSimulator/RobotSimulator.html\"><img src=\"content/RobotSimulator.gif\"></a><br/><br/>\
 	And here's an umbrella for most everything else, even this webpage:<br/><br/>\
 	<a href=\"https://github.com/robz\">https://github.com/robz</a>"},
 {	title:"Favorites",
 	filename:"",
-	text:"Here's a list of some websites I think are really cool:\
+	text:"Here's a list of some random websites I think are really cool:\
 	<ul>\
 	<li>http://www.thefwa.com</li>\
 	<li>http://stackoverflow.com</li>\
