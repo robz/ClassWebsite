@@ -9,7 +9,7 @@ function StateMachine() {
 			utils.setSelected(piece.coord);
 			this.prevCoord = piece.coord;
 			prevPieceMoves = rules.getPieceMoves(gameState, piece);
-			console.log("setting prevCoord to "+this.prevCoord);
+			//console.log("setting prevCoord to "+this.prevCoord);
 			this.state = 1;
 		} else if (this.state == 1 && piece) {
 			if (this.prevCoord[0] == piece.coord[0] && this.prevCoord[1] == piece.coord[1]) {
@@ -25,11 +25,13 @@ function StateMachine() {
 			}
 		} else if (this.state == 2) {
 			//var move = agent.randomMove(gameState);
-		  var move = agent.alphabeta_decision(gameState, 2).action;
-      if (move == null) {
-        alert("checkmate! you win!");
-        this.state = 4;
-      }
+			var choice = agent.alphabeta_decision(gameState, 2);
+			var move = choice.action;
+      		if (move == null) {
+        		alert("checkmate! you win!");
+        		this.state = 4;
+      		} else
+				console.log("expanded: "+choice.exp+" ; visited: "+choice.eva);
 			gameState.move(move[0], move[1]);
 			gameState.render();
 			this.state = 3;

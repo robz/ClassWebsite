@@ -158,7 +158,7 @@ function Utils()
 	}
 	
 	this.setHoveredOn = function(coord) {
-	  console.log("hovering on @ "+coord+" (vs "+stateMachine.prevCoord+")");
+	  //console.log("hovering on @ "+coord+" (vs "+stateMachine.prevCoord+")");
 		var id = this.coordToId(coord);
 		var elem = document.getElementById(id);
 		
@@ -170,7 +170,7 @@ function Utils()
 	}
 	
 	this.setHoveredOff = function(coord) {
-	  console.log("hovering off @ "+coord+" (vs "+stateMachine.prevCoord+")");
+	  //console.log("hovering off @ "+coord+" (vs "+stateMachine.prevCoord+")");
 	  
 	  if ( stateMachine.prevCoord &&
 	    ( coord[0] == stateMachine.prevCoord[0] && coord[1] == stateMachine.prevCoord[1] ))
