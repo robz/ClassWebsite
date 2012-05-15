@@ -17,6 +17,10 @@ function makeState(xs, ys, thetas, ds) {
 		d: ds,
 		totalw1: 0,
 		totalw2: 0,
+		sensorVals: [false,false,false,false,false,false,false,false],
+		distSensor: [{theta:0, dist:0, p:null},
+			{theta:0, dist:0, p:null},
+			{theta:0, dist:0, p:null}],
 		
 		update: function(w1,w2) {
 			var x2 = this.x, y2 = this.y, theta2 = this.theta, 
@@ -100,6 +104,8 @@ function makeState(xs, ys, thetas, ds) {
 			this.x = x2;
 			this.y = y2;
 			this.theta = theta2;
+			this.updateLineSensor();
+			this.updateDistSensor();
 		},
 		
 		// returns [[x,y],[xc,yc]]
@@ -179,17 +185,92 @@ function makeState(xs, ys, thetas, ds) {
 			];
 		},
 		
-		getLineSensorPoints: function(hx, hy, htheta) {
+		getLineSensors: function(hx, hy, htheta) {
 			corners = this.getCorners(hx,hy,htheta);
 			
 			var x1 = corners[2].x, y1 = corners[2].y;
 			var points = new Array(8);
 			var d = ROBOT_DIM/9;
 			for(var i = 0; i < 8; i++) {
-				points[i] = {x:x1+(i+1)*d*cos(htheta+PI/2), y:y1+(i+1)*d*sin(htheta+PI/2)};
-				//points[i].on = circlesIntersect
+				points[i] = {x:x1+(i+1)*d*cos(htheta+PI/2), y:y1+(i+1)*d*sin(htheta+PI/2),
+					on:this.sensorVals[i]};
 			}
 			return points;
+		},
+		
+		updateLineSensor: function() {
+			var x = this.x, y = this.y, theta = this.theta;
+			
+			var sensors = state.getLineSensors(x,y,theta);
+			for(var i = 0; i < sensors.length; i++) {
+				var sensorCircle = createCircle(sensors[i], LINE_SENSOR_RADIUS);
+				var flag = false;
+				
+				for(var j = 0; j < blackLine.length; j++) {
+					var lineCircle = createCircle(blackLine[j], BLACK_LINE_POINT_RADIUS);
+					if (circlesIntersect(lineCircle, sensorCircle)) {
+						flag = true;
+						break;
+					}
+				}
+				
+				flag |= circlesIntersect(obstCirc, sensorCircle);
+				
+				this.sensorVals[i] = flag;
+			}
+		},
+		
+		lineSensorText: function() {
+			var str = "[";
+			for(var i = 0; i < 8; i++) {
+				str += ""+((this.sensorVals[i])?1:0);
+			}
+			return str+"]";
+		},
+		
+		updateDistSensor: function() {
+			var hx = this.x+(this.d/2.0)*Math.cos(this.theta), 
+				hy = this.y+(this.d/2.0)*Math.sin(this.theta), 
+				htheta = this.theta;
+			
+			var hpoint = {x:hx, y:hy};
+			var thetaDifs = [-PI/2.0, 0, PI/2.0];
+			for(var k = 0; k < 3; k++) {
+				this.distSensor[k].theta = htheta+thetaDifs[k];
+				var vline = createLineFromVector(hpoint, htheta+thetaDifs[k]);
+			
+				var intersectList = [];
+				for(var i = 0; i < obstPolys.length; i++) {
+					var lines = obstPolys[i].lines;
+					for(var j = 0; j < lines.length; j++) {
+						var pline = lines[j];
+						var intersectPoint = getLineIntersection(pline, vline);
+						if(intersectPoint != false)
+							intersectList.push(intersectPoint);
+					}
+				}
+			
+				var minDist = 600;
+				var closestPoint = null;
+				for(var i = 0; i < intersectList.length; i++) {
+					var d = euclidDist(hpoint, intersectList[i]);
+					if (d < minDist) {
+						minDist = d;
+						closestPoint = intersectList[i];
+					}
+				}
+			
+				if (closestPoint != null) {
+					this.distSensor[k].dist = minDist;
+					this.distSensor[k].p = closestPoint;
+				} else {
+					this.distSensor[k].dist = minDist;
+					this.distSensor[k].p = {
+						x:(hpoint.x+minDist*Math.cos(htheta+thetaDifs[k])),
+						y:(hpoint.y+minDist*Math.sin(htheta+thetaDifs[k]))
+					};
+				}
+			}
 		},
 		
 		createRobotPolys: function(hx, hy, htheta) {
