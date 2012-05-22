@@ -63,7 +63,7 @@ function main() {
 	ls_main();
 	wf_main();
 	
-	dispCode("http://192.168.0.10/~robbynevels/RobotSimulator/Custom.js");
+	dispCode("cs.utexas.edu/~rjnevels/RobotSimulator/Custom.js");
 }
 
 function setSizes(width, height) {
