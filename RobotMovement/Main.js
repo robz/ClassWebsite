@@ -199,8 +199,9 @@ function repaint() {
 	g2.fillText("motor 1: "+vel1, 20, 20);
 	g2.fillText("motor 2: "+vel2, 20, 40);
     
-	g2.fillText("forward:  w", 460, 20);
-	g2.fillText("backward: s", 460, 40);
-	g2.fillText("left:     a", 460, 60);
-	g2.fillText("right:    d", 460, 80);
+	g2.fillText("forward:  w", 400, 20);
+	g2.fillText("backward: s", 400, 40);
+	g2.fillText("left:     a", 400, 60);
+	g2.fillText("right:    d", 400, 80);
+	g2.fillText("stop:     space", 400, 100);
 }
