@@ -35,6 +35,8 @@ function log(str) {
 
 // expends an array of 'particles', so for example:
 //	[[x1,y1,theta1],[x2,y2,theta2],...,[xn,yn,thetan]]
+// once set, they will be draw as dots & lines in 
+//	black on the canvas.
 function setParticleList(particles) {
 	particleVectors = new Array(particles.length);
 	for(var i = 0; i < particles.length; i++) 
@@ -42,3 +44,96 @@ function setParticleList(particles) {
 			{x:particles[i][0], y:particles[i][1]}, 
 			particles[i][2], 20);
 }
+
+// returns a list of obstacles on the field:
+//	[{ points:[{x:~,y:~},...], lines:[{m:~,b:~,v:~,p1:~,p2:~},...] }, ...]
+// where the points and lines are ordered clockwise around a given obstacle
+function getObstacleList() {
+	return obstacles;
+}
+
+// returns distance till object from a point and angle
+//	or 'null' if there is no intersection
+//	expects state to be [x,y,theta]
+//	expects objects as in getObstacleList
+function getDistanceToObstacle(state, obstacles) {
+	var statePoint = {x:state[0],y:state[1]};
+	var stateLine = createLineFromVector(statePoint, state[2]);
+	
+	var intersectList = [];
+	for(var i = 0; i < obstacles.length; i++) {
+		var lines = obstacles[i].lines;
+		for(var j = 0; j < lines.length; j++) {
+			var intersectPoint = getLineIntersection(lines[j], stateLine);
+			if(intersectPoint != false)
+				intersectList.push(intersectPoint);
+		}
+	}
+	
+	var minDist = DIST_SENSOR_MAX;
+	var closestPoint = null;
+	for(var i = 0; i < intersectList.length; i++) {
+		var d = euclidDist(statePoint, intersectList[i]);
+		if (d < minDist) {
+			minDist = d;
+			closestPoint = intersectList[i];
+		}
+	}
+	
+	if (closestPoint != null) {
+		return minDist;
+	} else {
+		return null;
+	}
+}
+
+// expends an array of 'particles', so for example:
+//	[{p:{x:~,y:~},theta:~},...]
+// once set, they will be draw as dots & lines in 
+//	black on the canvas.
+function paintParticleList2(particles) {
+	particleVectors = new Array(particles.length);
+	for(var i = 0; i < particles.length; i++) 
+		particleVectors[i] = createVector(
+			particles[i].p, particles[i].theta, 20);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

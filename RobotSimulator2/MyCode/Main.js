@@ -6,16 +6,28 @@ var APP_WIDTH = 1000, APP_HEIGHT = 650, CANVAS_WIDTH = 540, CANVAS_HEIGHT = 640,
 	
 var obstacles, blackTape, particleVectors, defaultCode;
 
-var lineFollowerOn, wallFollowerOn, customOn, firstPerson;
+var lineFollowerOn, wallFollowerOn, customOn, pf_state = 0, firstPerson;
 
-window.onload = function main() {
-	// check storage for local copy of code
+var defaultTabNum = 0;
+
+var tabberOptions = {
+	'onClick': function(argsObj) {
+		localStorage.setItem("defaulttab", argsObj.index);
+ 	}
+};
+
+window.onload = function() {
+	// check storage for local copy of code & default tab
 	var progTextArea = document.getElementById("prog_textarea");
 	if(window["localStorage"]) {
 		var progText = localStorage.getItem("program");
 		if(progText != null) {
 			defaultCode = progTextArea.value;
 			progTextArea.value = progText;
+		}
+		defaulttab = localStorage.getItem("defaulttab");
+		if (defaulttab != null) {
+			defaultTabNum = parseInt(defaulttab);
 		}
 	}
 	
@@ -62,10 +74,11 @@ window.onload = function main() {
 	setInterval("repaint();", 60);
 	
 	// initialize sub programs
-	initProg("line follower", ls_main, ls_loop, function() { return lineFollowerOn;});
-	initProg("wall follower", wf_main, wf_loop, function() { return wallFollowerOn;});
+	initProg("particle filter", pf_main, pf_loop, function() { return true;}, 100);
+	initProg("line follower", ls_main, ls_loop, function() { return lineFollowerOn;}, 100);
+	initProg("wall follower", wf_main, wf_loop, function() { return wallFollowerOn;}, 100);
 	initProg("custom program", cp_main, function() { cp_loop(); }, 
-		function() { return customOn; });
+		function() { return customOn; }, 100);
 }
 
 function resizeApp(asize) {
@@ -81,10 +94,18 @@ function resizeApp(asize) {
 	textCont.style.width = (asize.width/2-50)+"px";
 	textCont.style.height = (asize.height-10)+"px";
 	
-	addClass("text_tab_height", {"height":(asize.height-41)+"px"});
-	var elements = document.getElementsByClassName('tabbertab');
+	addClass("text_tab_height1", {"height":(asize.height-41)+"px"});
+	var elements = document.getElementsByClassName('tablevel1');
 	for (var i = 0; i < elements.length; i++) {
-		elements[i].className += ' text_tab_height';
+		if (i == defaultTabNum)
+			elements[i].className += " tabbertabdefault";
+		elements[i].className += ' tabbertab text_tab_height1';
+	}
+	
+	addClass("text_tab_height2", {"height":(asize.height-41-50)+"px"});
+	var elements = document.getElementsByClassName('tablevel2');
+	for (var i = 0; i < elements.length; i++) {
+		elements[i].className += ' tabbertab text_tab_height2';
 	}
 	
 	addClass("prog_btn_width", {"width": ((asize.width/2-50)/2-8)});
@@ -140,12 +161,12 @@ function getAppSize(w1, h1, w2, h2) {
 	}
 }
 
-function initProg(prog_name, prog_main, prog_loop, prog_cond) {
+function initProg(prog_name, prog_main, prog_loop, prog_cond, period) {
 	console.log("initializing "+prog_name+"!");
 	prog_main();
 	setInterval(
 		function() { if(prog_cond()) prog_loop(); }, 
-		100
+		period
 	);
 }
 
@@ -162,11 +183,14 @@ function repaint() {
 	
 	if(blackTape)
 		drawBlackTape(ctx, blackTape);
-	drawRobot(ctx, robotState);
 	drawObstacles(ctx, obstacles);	
+	if (particleVectors.length > 1)
+		drawVectors(ctx, particleVectors);
+	drawRobot(ctx, robotState);
+	if (particleVectors.length == 1)
+		drawVectors(ctx, particleVectors);
 	drawDistSensor(ctx, robotState);
 	drawStateInfo(ctx, robotState);
-	drawVectors(ctx, particleVectors);
 	
 	//var end = new Date().getTime();
 	//console.log(end-start);
@@ -208,6 +232,9 @@ function keyPressed(event) {
 		customOn = !customOn;
 		if (!customOn) nvel1 = nvel2 = 0;
 		else cp_main();
+	} else if(key == 't'.charCodeAt()) {
+		pf_state = pf_state+1;
+		if (pf_state == 3) pf_state = 0;
 	} else if(lineFollowerOn || wallFollowerOn || customOn) {
 		// grabbing the input so the normal control don't mess
 		//	with the programs.
@@ -265,6 +292,7 @@ function createObstacles() {
 	obstacles.push(createBox(300,400,70,100));
 	obstacles.push(createBox(CANVAS_WIDTH-40,150,40,300));
 	obstacles.push(createBox(0,200,30,200));
+	obstacles.push(createBox(150,350,80,80));
 }
 
 
