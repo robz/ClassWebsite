@@ -4,9 +4,10 @@ var APP_WIDTH = 1000, APP_HEIGHT = 650, CANVAS_WIDTH = 540, CANVAS_HEIGHT = 640,
 	PI = Math.PI, V_INC = .1, VEL_MAX = 1, REPAINT_PERIOD = 50, WHEEL_WIDTH = 6, NUM_TREDS = 5, 
 	LINE_SENSOR_RADIUS = 2, BLACK_LINE_POINT_RADIUS = 1, DIST_SENSOR_MAX = 400;
 	
-var obstacles, blackTape, particleVectors, defaultCode;
+var obstacles, blackTape, particleVectors, defaultCode, gdo;
 
-var lineFollowerOn, wallFollowerOn, customOn, pf_state = 2, firstPerson;
+var lineFollowerOn, wallFollowerOn, customOn, pf_state = 1, firstPerson,
+	blockDividers = 16;
 
 var defaultTabNum = 0;
 
@@ -60,6 +61,9 @@ window.onload = function() {
 	baseState = {x:CANVAS_WIDTH/2, y:CANVAS_HEIGHT/2, theta:PI*3/2};
 	createObstacles();
 	
+	// get optimizers
+	gdo = makeGDO(obstacles, CANVAS_WIDTH, CANVAS_HEIGHT, blockDividers);
+	
 	// kick off sensors
 	robotState.updateDistSensor(obstacles);
 	if(blackTape)
@@ -77,8 +81,26 @@ window.onload = function() {
 	initProg("particle filter", pf_main, pf_loop, function() { return true;}, 100);
 	initProg("line follower", ls_main, ls_loop, function() { return lineFollowerOn;}, 100);
 	initProg("wall follower", wf_main, wf_loop, function() { return wallFollowerOn;}, 100);
-	initProg("custom program", cp_main, function() { cp_loop(); }, 
-		function() { return customOn; }, 100);
+	initProg("custom program", cp_main, function() { cp_loop(); }, 	function() { return customOn; }, 100);
+
+	canvas.onmousedown = touch;
+}
+
+var touchPoints = [];
+
+function touch(event) {
+	touchPoints.push({x:event.offsetX,y:event.offsetY})
+	logPoints();
+}
+
+function logPoints() {
+	var str = "obstacles.push(createPolygon([", prefix = "";
+	for(var i = 0; i < touchPoints.length; i++) {
+		str += prefix+"{x:"+touchPoints[i].x+",y:"+touchPoints[i].y+"}";
+		prefix = ",";
+	}
+	str += "]));";
+	console.log(str);
 }
 
 function resizeApp(asize) {
@@ -180,10 +202,11 @@ function repaint() {
 	// clear the background
 	ctx.fillStyle = "lightblue";
 	ctx.fillRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
-	
+
 	if(blackTape)
 		drawBlackTape(ctx, blackTape);
 	drawObstacles(ctx, obstacles);	
+	drawGDO(ctx, gdo);
 	if (particleVectors.length > 1)
 		drawVectors(ctx, particleVectors);
 	drawRobot(ctx, robotState);
@@ -191,6 +214,7 @@ function repaint() {
 		drawVectors(ctx, particleVectors);
 	drawDistSensor(ctx, robotState);
 	drawStateInfo(ctx, robotState);
+	
 	
 	//var end = new Date().getTime();
 	//console.log(end-start);
@@ -218,42 +242,54 @@ function keyPressed(event) {
 	
 	var nvel1 = vel1, nvel2 = vel2;
 	
-	if (key == 'g'.charCodeAt()) {
+	if (key == 'e'.charCodeAt()) {
 		firstPerson = !firstPerson;
 	} else if (key == ' '.charCodeAt()) {
 		console.log("STOP!!!");
 		nvel1 = nvel2 = 0;
 		lineFollowerOn = wallFollowerOn = customOn = false;
-	} else if(key == 'a'.charCodeAt() && !wallFollowerOn && !customOn) {
+	} else if(key == 'z'.charCodeAt() && !wallFollowerOn && !customOn) {
 		lineFollowerOn = !lineFollowerOn;
 		if (!lineFollowerOn) nvel1 = nvel2 = 0;
-	} else if(key == 's'.charCodeAt() && !lineFollowerOn && !customOn) {
+	} else if(key == 'x'.charCodeAt() && !lineFollowerOn && !customOn) {
 		wallFollowerOn = !wallFollowerOn;
 		if (!wallFollowerOn) nvel1 = nvel2 = 0;
-	} else if(key == 'w'.charCodeAt() && !lineFollowerOn && !wallFollowerOn) {
+	} else if(key == 'c'.charCodeAt() && !lineFollowerOn && !wallFollowerOn) {
 		customOn = !customOn;
 		if (!customOn) nvel1 = nvel2 = 0;
 		else cp_main();
-	} else if(key == 't'.charCodeAt()) {
+	} else if(key == 'q'.charCodeAt()) {
 		pf_state = pf_state+1;
 		if (pf_state == 3) pf_state = 0;
 	} else if(lineFollowerOn || wallFollowerOn || customOn) {
 		// grabbing the input so the normal control don't mess
 		//	with the programs.
-	} else if(key == 'f'.charCodeAt()) {
-		nvel1 = vel1-V_INC;
-		if (nvel1 < -VEL_MAX)
-			nvel1 = -VEL_MAX;
-	} else if (key == 'r'.charCodeAt()) {
+	} else if(key == 'w'.charCodeAt()) {
 		nvel1 = vel1+V_INC;
+		nvel2 = vel2+V_INC;
 		if (nvel1 > VEL_MAX)
 			nvel1 = VEL_MAX;
-	} else if (key == 'd'.charCodeAt()) {
+		if (nvel2 > VEL_MAX)
+			nvel2 = VEL_MAX;
+	} else if (key == 'a'.charCodeAt()) {
+		nvel1 = vel1+V_INC;
 		nvel2 = vel2-V_INC;
+		if (nvel1 > VEL_MAX)
+			nvel1 = VEL_MAX;
 		if (nvel2 < -VEL_MAX)
 			nvel2 = -VEL_MAX;
-	} else if (key == 'e'.charCodeAt()) {
+	} else if (key == 's'.charCodeAt()) {
+		nvel1 = vel1-V_INC;
+		nvel2 = vel2-V_INC;
+		if (nvel1 < -VEL_MAX)
+			nvel1 = -VEL_MAX;
+		if (nvel2 < -VEL_MAX)
+			nvel2 = -VEL_MAX;
+	} else if (key == 'd'.charCodeAt()) {
+		nvel1 = vel1-V_INC;
 		nvel2 = vel2+V_INC;
+		if (nvel1 < -VEL_MAX)
+			nvel1 = -VEL_MAX;
 		if (nvel2 > VEL_MAX)
 			nvel2 = VEL_MAX;
 	} 
@@ -283,20 +319,29 @@ function loadCustom() {
 
 function createObstacles() {
 	obstacles = [];
+	
 	obstacles.push(createBox(0,0,5,CANVAS_HEIGHT));
 	obstacles.push(createBox(CANVAS_WIDTH-5,0,5,CANVAS_HEIGHT));
 	obstacles.push(createBox(0,0,CANVAS_WIDTH,5));
 	obstacles.push(createBox(0,CANVAS_HEIGHT-5,CANVAS_WIDTH,5));
-	obstacles.push(createBox(0,CANVAS_HEIGHT-70,70,70));
-	obstacles.push(createBox(CANVAS_WIDTH-90,CANVAS_HEIGHT-90,90,90));
-	obstacles.push(createBox(200,0,110,60));
-	obstacles.push(createBox(160,180,110,60));
-	obstacles.push(createBox(300,400,70,100));
-	obstacles.push(createBox(CANVAS_WIDTH-40,150,40,300));
-	obstacles.push(createBox(0,200,30,200));
-	obstacles.push(createBox(150,350,80,80));
+	
+	obstacles.push(createPolygon([{x:5,y:188},{x:31,y:196},{x:37,y:292},{x:39,y:378},{x:26,y:410},
+		{x:5,y:415}])); 
+	obstacles.push(createPolygon([{x:158,y:5},{x:164,y:41},{x:187,y:57},{x:237,y:62},{x:325,y:56},
+		{x:355,y:27},{x:355,y:5}]));
+	obstacles.push(createPolygon([{x:535,y:144},{x:498,y:174},{x:490,y:321},{x:511,y:452},
+		{x:535,y:467}]));
+	obstacles.push(createPolygon([{x:5,y:551},{x:43,y:550},{x:82,y:584},{x:81,y:637},{x:5,y:637}]));
+	obstacles.push(createPolygon([{x:538,y:549},{x:492,y:540},{x:444,y:562},{x:401,y:592},
+		{x:375,y:637},{x:537,y:637}]));
+	
+	obstacles.push(createPolygon([{x:206,y:248},{x:296,y:244},{x:388,y:225},{x:362,y:153},
+		{x:266,y:147},{x:161,y:158},{x:136,y:206},{x:153,y:232}]));
+	obstacles.push(createPolygon([{x:180,y:340},{x:119,y:331},{x:114,y:365},{x:122,y:444},
+		{x:164,y:504},{x:203,y:504},{x:233,y:486},{x:228,y:414}]));
+	obstacles.push(createPolygon([{x:383,y:351},{x:339,y:358},{x:287,y:377},{x:288,y:459},
+		{x:314,y:510},{x:352,y:503},{x:390,y:454}]));
 }
-
 
 
 
