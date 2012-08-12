@@ -1,0 +1,149 @@
+
+function robot2(x, y, heading, steering_angle, velocity, length, last_time_updated) 
+{	
+	this.x = x;
+	this.y = y;
+	this.heading = heading;
+	this.steering_angle = steering_angle;
+	this.velocity = velocity;
+	this.length = length;
+	this.last_time_updated= last_time_updated;
+		
+	this.set = function (x, y, heading, steering_angle, velocity, length, last_time_updated) {
+			this.x = x;
+			this.y = y;
+			this.heading = heading;
+			this.steering_angle = steering_angle;
+			this.velocity = velocity;
+			this.last_time_updated = last_time_updated;
+			this.length = length;
+		};
+		
+	this.update = function() {
+			var cur_time = new Date().getTime(),
+				delta_time = cur_time - this.last_time_updated,
+				delta_distance = this.velocity*delta_time;	
+			if (this.last_time_updated == 0) {
+				delta_distance = 0
+			}
+			this.last_time_updated = cur_time;
+		
+			var x = this.x,
+				y = this.y,
+				L = AXLE_LENGTH,
+				alpha = this.steering_angle,
+				theta = this.heading
+				d = delta_distance;
+			
+			var new_x, new_y, new_heading, new_robot;
+			
+			if (delta_distance == 0) {
+				new_x = x;
+				new_y = y;
+				new_heading = theta;
+			} else if (alpha == 0) {
+				new_x = x + d*Math.cos(theta);
+				new_y = y + d*Math.sin(theta);
+				new_heading = theta;
+			} else {
+				var beta = (d/L)*Math.tan(alpha);
+				var R = d/beta;
+				var cx = x - R*Math.sin(theta),
+					cy = y + R*Math.cos(theta);
+				new_heading = (theta + beta)%(2*PI);
+				new_x = cx + R*Math.sin(new_heading);
+				new_y = cy - R*Math.cos(new_heading);
+			}
+			
+			//this.set(new_x, new_y, new_heading, this.steering_angle, this.velocity, this.length, this.last_time_updated);
+			return new robot2(new_x, new_y, new_heading, this.steering_angle, this.velocity, this.length, this.last_time_updated);
+		};
+		
+	this.steer = function(delta_steering_angle) {
+			var new_steering_angle = this.steering_angle + delta_steering_angle;
+			
+			//this.set(this.x, this.y, this.heading, new_steering_angle, this.velocity, this.length, this.last_time_updated);
+			return new robot2(this.x, this.y, this.heading, new_steering_angle, this.velocity, this.length, this.last_time_updated);
+		};
+		
+	this.accelerate = function(delta_velocity) {
+			new_velocity = this.velocity + delta_velocity;
+			
+			return new robot2(this.x, this.y, this.heading, this.steering_angle, new_velocity, this.length, this.last_time_updated);
+			//this.set(this.x, this.y, this.heading, this.steering_angle, new_velocity, this.length, this.last_time_updated);
+		};
+		
+		// returns [{x:x1,y:y1},...,{x:x4,y:y4}]
+	this.get_corners = function() {
+			var theta = this.heading,
+				W = AXLE_LENGTH,
+				L = this.length,
+				x = this.x,
+				y = this.y;
+			var c1 = {x:x+(W/2)*Math.cos(theta+PI/2), 	y:y+(W/2)*Math.sin(theta+PI/2)},
+				c4 = {x:x+(W/2)*Math.cos(theta+3*PI/2), y:y+(W/2)*Math.sin(theta+3*PI/2)};
+			var c2 = {x:c1.x+L*Math.cos(theta), y:c1.y+L*Math.sin(theta)},
+				c3 = {x:c4.x+L*Math.cos(theta), y:c4.y+L*Math.sin(theta)};
+			return [c1,c2,c3,c4];
+		};
+		
+		// returns [[{x:x1,y:y1},...,{x:x4,y:y4}],...,[...]]
+	this.get_wheels = function(corners) {
+			var alpha = this.steering_angle,
+				W = WHEEL_WIDTH,
+				L = WHEEL_LENGTH,
+				x = this.x,
+				y = this.y;
+			
+			for (var i = 0; i < 4; i++) {
+				var theta = this.heading,
+					c = corners[i];
+				
+				if (i == 1 || i == 2) {
+					theta += alpha;
+				}
+					
+				var t1x = c.x+W*Math.cos(theta+PI/2), 	
+					t1y = c.y+W*Math.sin(theta+PI/2),
+					t2x = c.x+W*Math.cos(theta+3*PI/2), 	
+					t2y = c.y+W*Math.sin(theta+3*PI/2);
+					
+				wheels[i][0].x = t1x+(L/2)*Math.cos(theta+PI); 
+				wheels[i][0].y = t1y+(L/2)*Math.sin(theta+PI);
+				wheels[i][1].x = t1x+(L/2)*Math.cos(theta); 	
+				wheels[i][1].y = t1y+(L/2)*Math.sin(theta);
+				wheels[i][3].x = t2x+(L/2)*Math.cos(theta+PI); 
+				wheels[i][3].y = t2y+(L/2)*Math.sin(theta+PI);
+				wheels[i][2].x = t2x+(L/2)*Math.cos(theta); 	
+				wheels[i][2].y = t2y+(L/2)*Math.sin(theta);
+			}
+			
+			return wheels;
+		};
+		
+	this.draw = function(context) {
+			context.fillStyle = "blue";
+			
+			corners = this.get_corners();
+			context.beginPath();
+			context.moveTo(corners[0].x,corners[0].y);
+			for(i = 1; i < corners.length; i++) {
+				context.lineTo(corners[i].x, corners[i].y);
+			}
+			context.closePath();
+			context.fill();
+			
+			context.stokeStyle = "black";
+			var wheels = this.get_wheels(corners);
+			for (j = 0; j < wheels.length; j++) {
+				wheel = wheels[j];
+				context.beginPath();
+				context.moveTo(wheel[0].x,wheel[0].y);
+				for(i = 1; i < wheel.length; i++) {
+					context.lineTo(wheel[i].x, wheel[i].y);
+				}
+				context.closePath();
+				context.stroke();
+			}
+		};
+}
