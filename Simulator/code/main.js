@@ -12,29 +12,30 @@ var PI = Math.PI, SCALE = 2, WHEEL_WIDTH = 4*SCALE, WHEEL_LENGTH = 15*SCALE,
 		32 : "stop"
 		};
 
-var real_robot;
+var robots;
 
 window.onload = function() 
 {
-	//real_robot = ackerman_robot(100, 100, 0, 0, 0, 40*SCALE, 40*SCALE, 0);
-	//real_robot = tank_robot(100, 100, 0, 0, 0, 40*SCALE, 40*SCALE, 0);
-	//real_robot = crab_robot(100, 100, 0, 0, 0, 40*SCALE, 40*SCALE, 0);
+	width = 40*SCALE;
+	length = 40*SCALE;
+	startx = 300/2;
+	starty = 100;
 	
-	real_robot = [
-		ackerman_robot(100, 100, 0, 0, 0, 40*SCALE, 40*SCALE, 0),
-		tank_robot(100, 100, 0, 0, 0, 40*SCALE, 40*SCALE, 0),
-		crab_robot(100, 100, 0, 0, 0, 40*SCALE, 40*SCALE, 0)
+	robots = [
+		ackerman_robot(startx, starty, PI/2, 0, 0, width, length, 0),
+		tank_robot(startx, starty, PI/2, 0, 0, width, length, 0),
+		crab_robot(startx, starty, PI/2, 0, 0, width, length, 0)
 		];
 
 	setInterval(paintCanvas, 30);
 }
 
-function keydown(event, i) 
+function keydown(event, index) 
 {
-	if (real_robot[i].type == ACKERMAN || real_robot[i].type == CRAB) {
-		keydown_ackerman_crab(event, real_robot[i]);
-	} else if (real_robot[i].type == TANK) {
-		keydown_tank(event, real_robot[i]);
+	if (robots[index].type == ACKERMAN || robots[index].type == CRAB) {
+		keydown_ackerman_crab(event, robots[index]);
+	} else if (robots[index].type == TANK) {
+		keydown_tank(event, robots[index]);
 	}
 }
 
@@ -86,7 +87,7 @@ function keydown_tank(event, my_robot, index)
 												 delta_wheel2_velocity); 
 	
 	if (REPLACE_ROBOT_DYNAMICALLY) {
-		real_robot[index] = new_robot;
+		robots[index] = new_robot;
 	}
 }
 
@@ -134,14 +135,14 @@ function keydown_ackerman_crab(event, my_robot, index)
 		} 
 		
 		if (REPLACE_ROBOT_DYNAMICALLY) {
-			real_robot[index] = new_robot;
+			robots[index] = new_robot;
 		}
 	}
 }
 
 function paintCanvas() 
 {
-	for(index = 0; index < real_robot.length; index++) {
+	for(index = 0; index < robots.length; index++) {
 		var canvas = document.getElementById("canvas"+index);
 		var context = canvas.getContext("2d");
 		
@@ -149,11 +150,11 @@ function paintCanvas()
 		context.fillRect(0, 0, canvas.width, canvas.height);
 		
 		if (REPLACE_ROBOT_DYNAMICALLY) {
-			real_robot[index] = real_robot[index].update();
+			robots[index] = robots[index].update();
 		} else {
-			real_robot[index].update();
+			robots[index].update();
 		}
 		
-		real_robot[index].draw(context);
+		robots[index].draw(context);
 	}
 }
