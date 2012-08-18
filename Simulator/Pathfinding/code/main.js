@@ -43,9 +43,20 @@ window.onload=function() {
 }
 
 function clicked(event) {
+	var mouseX, mouseY;
+
+    if(event.offsetX) {
+        mouseX = event.offsetX;
+        mouseY = event.offsetY;
+    }
+    else if(event.layerX) {
+        mouseX = event.layerX-canvas.offsetLeft;
+        mouseY = event.layerY-canvas.offsetTop;
+    }
+
 	var cur_pos = problem.create_pos(
-		Math.round(event.offsetX/CELL_WIDTH - .5), 
-		Math.round(event.offsetY/CELL_HEIGHT - .5),
+		Math.round(mouseX/CELL_WIDTH - .5), 
+		Math.round(mouseY/CELL_HEIGHT - .5),
 		0
 	);
 	
