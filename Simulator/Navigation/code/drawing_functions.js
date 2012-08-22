@@ -1,0 +1,59 @@
+
+function drawCircle(circle) {
+	context.lineWidth = 3;
+	context.beginPath();
+	context.arc(circle.c.x, circle.c.y, circle.r, 0, 2*Math.PI, true);
+	context.stroke();
+}
+
+function drawGrid(grid) {
+	for (var x = 0; x < COLS; x++) {
+		for (var y = 0; y < ROWS; y++) {
+			if (grid[x][y]) {
+				context.fillStyle = "lightGray";
+				context.fillRect(x*CELL_WIDTH, y*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+			} else {
+				context.fillStyle = "white";
+				context.fillRect(x*CELL_WIDTH, y*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+			}
+		}
+	}
+
+	context.lineWidth = 1;
+	context.strokeStyle = "lightGray";
+	
+	for (var x = 0; x <= COLS; x++) {
+		context.moveTo(x*CELL_WIDTH, 0);
+		context.lineTo(x*CELL_WIDTH, CANVAS_HEIGHT);
+		context.stroke();
+	}
+	
+	for (var y = 0; y <= ROWS; y++) {
+		context.moveTo(0, y*CELL_HEIGHT);
+		context.lineTo(CANVAS_WIDTH, y*CELL_HEIGHT);
+		context.stroke();
+	}
+}
+
+function drawPoly(polygon) {
+	var points = polygon.points;
+	context.lineWidth = 3;
+	context.beginPath();
+	context.moveTo(points[0].x, points[0].y);
+	for (i = 1; i < points.length; i++) {
+		context.lineTo(points[i].x, points[i].y);
+	}
+	context.closePath();
+	context.stroke();
+}
+
+function drawLines(lines) 
+{
+	context.beginPath();
+	context.lineWidth = 2;
+	context.moveTo(lines[0].p1.x, lines[0].p1.y);
+	for(var i = 0; i < lines.length; i++) {
+		context.lineTo(lines[i].p2.x, lines[i].p2.y);
+	}
+	context.stroke();
+}
