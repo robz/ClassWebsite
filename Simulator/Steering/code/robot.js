@@ -459,6 +459,11 @@ function ackerman_robot(x, y, heading, steering_angle, velocity, length, width,
 		steer : function(delta_steering_angle) {
 			var new_steering_angle = this.steering_angle + delta_steering_angle;
 			
+			if (new_steering_angle > MAX_ALPHA_ACKERMAN)
+				new_steering_angle = MAX_ALPHA_ACKERMAN;
+			if (new_steering_angle < -MAX_ALPHA_ACKERMAN)
+				new_steering_angle = -MAX_ALPHA_ACKERMAN;
+			
 			if (REPLACE_ROBOT_DYNAMICALLY) {
 				return ackerman_robot(this.x, this.y, this.heading, new_steering_angle, 
 							this.velocity, this.length, this.width, this.last_time_updated);

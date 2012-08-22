@@ -4,6 +4,8 @@
 
 #canvas {
 	background: lightGray;
+	border-style: solid;
+	border-width: 1px;
 }
 
 body {

@@ -37,7 +37,7 @@ window.onload=function() {
 	CELL_WIDTH = CANVAS_WIDTH/COLS;
 	CELL_HEIGHT = CANVAS_HEIGHT/ROWS;
 	
-	problem = new SearchProblem(obstacle_grid);
+	problem = new BasicSearchProblem(obstacle_grid);
 	
 	draw_grid(obstacle_grid, COLS, ROWS);
 }
@@ -84,50 +84,6 @@ function clicked(event) {
 		
 		has_clicked = false;
 	}
-}
-
-function to_point_list(problem, start_pos, path) {
-	var point_list = new Array(path.length+1);
-	
-	point_list[0] = problem.create_pos(start_pos.x, start_pos.y, start_pos.dir);
-	for(var i = 1; i < point_list.length; i++) {
-		point_list[i] = problem.next_pos(point_list[i-1], path[i-1]);
-	}
-	for(var i = 0; i < point_list.length; i++) {
-		point_list[i].x *= CELL_WIDTH;
-		point_list[i].x += CELL_WIDTH/2;
-		point_list[i].y *= CELL_HEIGHT;
-		point_list[i].y += CELL_HEIGHT/2;
-	}
-	
-	return point_list;
-}
-
-function smooth_path(path) {
-	var newpath = new Array(path.length);
-	for (i = 0; i < path.length; i++) {
-		newpath[i] = {x:path[i].x,y:path[i].y};
-	}
-	
-	var weight_data = .5, weight_smooth = .2;
-	var tolerance = .0001, delta = 1;
-    while (delta > tolerance) {
-        delta = 0;
-        for (i = 1; i < path.length-1; i++) { 
-            var old1 = newpath[i].x,
-				old2 = newpath[i].y;
-            
-            newpath[i].x += weight_data*(path[i].x - newpath[i].x);
-            newpath[i].y += weight_data*(path[i].y - newpath[i].y);
-            
-            newpath[i].x += weight_smooth*(newpath[i-1].x + newpath[i+1].x - 2*newpath[i].x);
-            newpath[i].y += weight_smooth*(newpath[i-1].y + newpath[i+1].y - 2*newpath[i].y);
-            
-            delta += Math.abs(old1 - newpath[i].x);
-            delta += Math.abs(old2 - newpath[i].y);
-		}
-	}
-	return newpath;
 }
 
 function create_zeroed_grid(cols, rows) {
