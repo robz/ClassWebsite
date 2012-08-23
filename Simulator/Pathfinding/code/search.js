@@ -13,7 +13,15 @@ function BigGridSearchProblem(obstacle_grid)
 		{deltax:-1, deltay:-1},
 		{deltax:-1, deltay: 1},
 		{deltax: 1, deltay:-1},
-		{deltax: 1, deltay: 1}
+		{deltax: 1, deltay: 1},
+		{deltax: 2, deltay: 0},
+		{deltax: 0, deltay: 2},
+		{deltax:-2, deltay: 0},
+		{deltax: 0, deltay:-2},
+		{deltax:-2, deltay:-2},
+		{deltax:-2, deltay: 2},
+		{deltax: 2, deltay:-2},
+		{deltax: 2, deltay: 2}
 	]
 	this.actions = [ { deltax: 0, deltay:-1, cost:1, next_valid_deltas:surrounding_deltas },
 					 { deltax: 0, deltay: 1, cost:1, next_valid_deltas:surrounding_deltas },

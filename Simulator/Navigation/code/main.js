@@ -1,9 +1,9 @@
 var REPLACE_ROBOT_DYNAMICALLY = false;
 
-var COLS = 50, ROWS = 40, 
+var COLS = 100, ROWS = 100, 
 	CANVAS_WIDTH, CANVAS_HEIGHT, CELL_WIDTH, CELL_HEIGHT,
 	SCALE = .5, WHEEL_WIDTH = 4*SCALE, WHEEL_LENGTH = 15*SCALE,
-	PI = Math.PI, MAX_ALPHA_ACKERMAN = PI/4, MAX_V = .1, DELTA_V = .04;
+	PI = Math.PI, MAX_ALPHA_ACKERMAN = PI/4, MAX_V = .1, DELTA_V = .05;
 
 var canvas, context;
 var grid, polygon, problem, path_lines, robot;
@@ -60,7 +60,7 @@ window.onload = function()
 	robot = ackerman_robot(10*CELL_WIDTH+CELL_WIDTH/2, 
 				5*CELL_HEIGHT+CELL_HEIGHT/2, 0, 0, 0, 40*SCALE, 40*SCALE, 0);
 	
-	setInterval(paintCanvas, 40);
+	setInterval(paintCanvas, 30);
 	setInterval(followPath, 100);
 };
 
@@ -134,12 +134,9 @@ function fillGrid(grid, polygons, circles) {
 }
 
 function paintCanvas() {
-	context.fillStyle = "white";
-	context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-	
 	drawGrid(grid);
 	
-	context.strokeStyle = "brown";
+	context.strokeStyle = "tan";
 	for (var i = 0; i < polygons.length; i++) {
 		drawPoly(polygons[i]);
 	}

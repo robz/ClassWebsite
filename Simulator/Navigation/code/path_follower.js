@@ -1,7 +1,7 @@
 var old_error, pid_sum = 0;
 
 function followPath() {
-	var p = 1, d = 1, i = .01;
+	var p = .8, d = 1.2, i = .01;
 	
 	if (path_lines) 
 	{
@@ -39,7 +39,7 @@ function followPath() {
 }
 
 function getCrossCheckError(robot, lines) {
-	var radius = CELL_HEIGHT*2;
+	var radius = (robot.width+robot.length)*3/4;
 	var circle = create_circle(create_point(robot.x, robot.y), radius);
 	var p = false;
 	

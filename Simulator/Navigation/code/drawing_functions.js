@@ -7,18 +7,18 @@ function drawCircle(circle) {
 }
 
 function drawGrid(grid) {
+	context.fillStyle = "white";
+	context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+	
+	context.fillStyle = "lightGray";
 	for (var x = 0; x < COLS; x++) {
 		for (var y = 0; y < ROWS; y++) {
 			if (grid[x][y]) {
-				context.fillStyle = "lightGray";
 				context.fillRect(x*CELL_WIDTH, y*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-			} else {
-				context.fillStyle = "white";
-				context.fillRect(x*CELL_WIDTH, y*CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-			}
+			} 
 		}
 	}
-
+	/*
 	context.lineWidth = 1;
 	context.strokeStyle = "lightGray";
 	
@@ -33,6 +33,7 @@ function drawGrid(grid) {
 		context.lineTo(CANVAS_WIDTH, y*CELL_HEIGHT);
 		context.stroke();
 	}
+	*/
 }
 
 function drawPoly(polygon) {
