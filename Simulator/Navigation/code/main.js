@@ -1,18 +1,18 @@
 var REPLACE_ROBOT_DYNAMICALLY = false;
 
-var COLS = 100, ROWS = 100, 
+var COLS = 50, ROWS = 50, 
 	CANVAS_WIDTH, CANVAS_HEIGHT, CELL_WIDTH, CELL_HEIGHT,
-	SCALE = .5, WHEEL_WIDTH = 4*SCALE, WHEEL_LENGTH = 15*SCALE,
-	PI = Math.PI, MAX_ALPHA_ACKERMAN = PI/4, MAX_V = .1, DELTA_V = .05;
+	PI = Math.PI, DELTA_V = .05;
 
 var canvas, context;
-var grid, polygon, problem, path_lines, robot;
-var has_clicked = false, first_pos, last_pos;
+var grid, polygon, problem, path_lines, pid_goal, robot, time_keeper;
+var first_pos, last_pos;
 
 window.onload = function() 
 {
 	canvas = document.getElementById("canvas");
 	context = canvas.getContext("2d");
+	
 	CANVAS_WIDTH = canvas.width;
 	CANVAS_HEIGHT = canvas.height;
 	CELL_WIDTH = CANVAS_WIDTH/COLS;
@@ -57,12 +57,38 @@ window.onload = function()
 	fillGrid(grid, polygons, circles);
 	problem = new BigGridSearchProblem(grid);
 	
-	robot = ackerman_robot(10*CELL_WIDTH+CELL_WIDTH/2, 
-				5*CELL_HEIGHT+CELL_HEIGHT/2, 0, 0, 0, 40*SCALE, 40*SCALE, 0);
+	time_keeper = gametime_timekeeper();
+	time_keeper.init();
 	
+	SCALE = .5;
+	WHEEL_WIDTH = 4*SCALE;
+	WHEEL_LENGTH = 15*SCALE;
+	
+	robot = tank_robot(10*CELL_WIDTH+CELL_WIDTH/2, 5*CELL_HEIGHT+CELL_HEIGHT/2, 
+				0, 0, 0, 40*SCALE, 40*SCALE, 0, time_keeper);
+	
+	setInterval("time_keeper.update(10);", 10);
 	setInterval(paintCanvas, 30);
-	setInterval(followPath, 100);
+	setInterval(followPath_Tank, 30);
 };
+
+function valid_pos(pos) {
+	if (problem.is_valid_pos(pos)) {
+		if (problem.surrounding_deltas) {
+			var deltas = problem.surrounding_deltas;
+			for(var i = 0; i < deltas.length; i++) {
+				var other_pos = problem.create_pos(pos.x + deltas[i].deltax, 
+												pos.y + deltas[i].deltay);
+				if (!problem.is_valid_pos(other_pos)) {
+					return false;
+				}
+			}
+		}
+	} else {
+		return false;
+	}
+	return true;
+}
 
 function clicked(event) {
 	var mouseX, mouseY;
@@ -82,26 +108,22 @@ function clicked(event) {
 		0
 	);
 	
-	if (grid[cur_pos.x][cur_pos.y])
+	if (!valid_pos(cur_pos))
 		return;
+	last_pos = cur_pos;
+		
+	first_pos = problem.create_pos(
+		Math.round(robot.x/CELL_WIDTH - .5), 
+		Math.round(robot.y/CELL_HEIGHT - .5),
+		0
+	);
+		
+	var path = astar(first_pos, last_pos, problem);
 	
-	if (!has_clicked) {
-		last_pos = cur_pos;
-		
-		first_pos = problem.create_pos(
-			Math.round(robot.x/CELL_WIDTH - .5), 
-			Math.round(robot.y/CELL_HEIGHT - .5),
-			0
-		);
-		
-		var path = astar(first_pos, last_pos, problem);
-		
-		if(path != null) {
-			point_list = smooth_path(to_point_list(problem, first_pos, path));
-			path_lines = create_lines(point_list);
-			
-			//has_clicked = true;
-		}
+	if(path != null) {
+
+		point_list = smooth_path(to_point_list(problem, first_pos, path));
+		path_lines = create_lines(point_list);
 	}
 }
 
@@ -143,9 +165,15 @@ function paintCanvas() {
 	for (var i = 0; i < circles.length; i++) {
 		drawCircle(circles[i]);
 	} 
-	if(path_lines) {
+	
+	if (path_lines && path_lines.length > 0) {
 		context.strokeStyle = "purple";
 		drawLines(path_lines);
+	}
+	
+	if (pid_goal) {
+		context.strokeStyle = "red";
+		drawCircle(pid_goal);
 	}
 	
 	robot.update();

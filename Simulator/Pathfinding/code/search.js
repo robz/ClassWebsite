@@ -5,7 +5,7 @@ function BigGridSearchProblem(obstacle_grid)
 	this.ROWS = obstacle_grid[0].length;
 	
 	// up, down, left, right, diagonals
-	var surrounding_deltas = [
+	this.surrounding_deltas = [
 		{deltax: 1, deltay: 0},
 		{deltax: 0, deltay: 1},
 		{deltax:-1, deltay: 0},
@@ -13,24 +13,17 @@ function BigGridSearchProblem(obstacle_grid)
 		{deltax:-1, deltay:-1},
 		{deltax:-1, deltay: 1},
 		{deltax: 1, deltay:-1},
-		{deltax: 1, deltay: 1},
-		{deltax: 2, deltay: 0},
-		{deltax: 0, deltay: 2},
-		{deltax:-2, deltay: 0},
-		{deltax: 0, deltay:-2},
-		{deltax:-2, deltay:-2},
-		{deltax:-2, deltay: 2},
-		{deltax: 2, deltay:-2},
-		{deltax: 2, deltay: 2}
-	]
-	this.actions = [ { deltax: 0, deltay:-1, cost:1, next_valid_deltas:surrounding_deltas },
-					 { deltax: 0, deltay: 1, cost:1, next_valid_deltas:surrounding_deltas },
-					 { deltax:-1, deltay: 0, cost:1, next_valid_deltas:surrounding_deltas },
-					 { deltax: 1, deltay: 0, cost:1, next_valid_deltas:surrounding_deltas },
-					 { deltax: 1, deltay: 1, cost:Math.sqrt(2), next_valid_deltas:surrounding_deltas },
-					 { deltax:-1, deltay: 1, cost:Math.sqrt(2), next_valid_deltas:surrounding_deltas },
-					 { deltax: 1, deltay:-1, cost:Math.sqrt(2), next_valid_deltas:surrounding_deltas },
-					 { deltax:-1, deltay:-1, cost:Math.sqrt(2), next_valid_deltas:surrounding_deltas },];
+		{deltax: 1, deltay: 1}
+	];
+	
+	this.actions = [ { deltax: 0, deltay:-1, cost:1, next_valid_deltas:this.surrounding_deltas },
+					 { deltax: 0, deltay: 1, cost:1, next_valid_deltas:this.surrounding_deltas },
+					 { deltax:-1, deltay: 0, cost:1, next_valid_deltas:this.surrounding_deltas },
+					 { deltax: 1, deltay: 0, cost:1, next_valid_deltas:this.surrounding_deltas },
+					 { deltax: 1, deltay: 1, cost:Math.sqrt(2), next_valid_deltas:this.surrounding_deltas },
+					 { deltax:-1, deltay: 1, cost:Math.sqrt(2), next_valid_deltas:this.surrounding_deltas },
+					 { deltax: 1, deltay:-1, cost:Math.sqrt(2), next_valid_deltas:this.surrounding_deltas },
+					 { deltax:-1, deltay:-1, cost:Math.sqrt(2), next_valid_deltas:this.surrounding_deltas }];
 	
 	this.next_pos = function(pos, action_index) {
 		var action = this.actions[action_index];
