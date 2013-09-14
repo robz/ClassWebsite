@@ -1,7 +1,7 @@
 var content_arr = [
 {	title:"Hello.",
 	filename:"",
-	text:"I'm a third year Computer Science and Computer Engineering major \
+	text:"I'm a fourth year Computer Science and Computer Engineering major \
 	at the University of Texas at Austin. I'm interested in everything to do \
 	with computers. I enjoy hanging out with people who ask existential \
 	questions. I like piano keys, rainy days, and comfortable dead ends.\
@@ -12,11 +12,16 @@ var content_arr = [
 {	title:"Academics",
 	filename:"",
 	text:"Here are the courses I'm currently taking:<br/><br/>\
+	Intro to Senior Design<br/>\
+	Probability<br/>\
+	Undergraduate reading and research<br/>\
+	Intro to Women's and Gender Studies<br/>\
+	Computer Graphics<br/>\
+	Here are some <em>interesting</em> courses I've already taken:<br/><br/>\
 	EE 461L Software Engineering and Design<br/>\
 	CS 343 Artificial Intelligence<br/>\
 	CS 372H Intro To Operating Systems<br/>\
 	WGS 301 Gay & Lesbian Literature & Culture<br/><br/>\
-	Here are some <em>interesting</em> courses I've already taken:<br/><br/>\
 	EE 306 Introduction to Computing<br/>EE 312 Introduction to Programming<br/>\
 	EE 319K Introduction to Embedded Systems<br/>EE 460N Computer Architecture<br/>\
 	CS 315 Algorithms and Data Structures<br/>CS 337 Theory of Programming Practice<br/>\
@@ -42,7 +47,6 @@ var content_arr = [
 	<li>https://github.com</li>\
 	<li>http://www.kiva.org</li>\
 	<li>http://cis-india.org</li>\
-	<li>http://thataustingirl.blogspot.com</li>\
 	</ul>"},
 {	title:"Contact",
 	filename:"",
@@ -58,12 +62,5 @@ unlike many other preparations, here there is no chemistry causing each of the t
 sacrifice a part of its nature and espouse that of the other, thus becoming through osmosis, like \
 bread and butter, a new and wonderful substance. In this case, mayonnaise and vegetables remain \
 perennial, each identical to its own self but, as in the carnal act, hopelessly ecstatic at being \
-together. As for the meat, it nevertheless does obtain something more: its texture is elastic and \
-porous, it yields to the bite and fills with mayonnaise in such a way that what one is chewing on, \
-without false modesty, is something firm at heart that has been drizzled with a velvety moisture. \
-Add to this the delicacy of a smooth flavor, for there is nothing biting about mayonnaise, no hot \
-spiciness--like water, it surprises one's mouth with its affable neutrality; then come the \
-exquisite nuances of the spread of vegetables: insolent tang of radishes and cauliflower, watery \
-sweetness of the tomato, discreet acidity of broccoli, generosity of the carrot upon the tongue, \
-the crunchy licorice hints of celery... a treat fit for a king."} 
+together."} 
 ];
